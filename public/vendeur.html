@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Devenir Vendeur - Diallo Digital Marketplace</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="navbar">
+        <div class="navbar-container">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="img/logo.png" alt="Diallo Digital Logo" class="logo-img">
+                    DIALLO DIGITAL<span>.</span>
+                </a>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html">Retour à la boutique</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="vendeur-main">
+        <section class="vendeur-hero">
+            <h1>Propulsez vos ventes avec Diallo Digital</h1>
+            <p>Rejoignez la Marketplace n°1 à Conakry et vendez vos produits à des milliers de clients.</p>
+        </section>
+
+        <section class="vendeur-form-section">
+            <div class="vendeur-container">
+                <div class="vendeur-info">
+                    <h3>Pourquoi vendre chez nous ?</h3>
+                    <ul>
+                        <li>✨ <strong>Visibilité Maximale</strong> : Touchez toute la Guinée.</li>
+                        <li>🚚 <strong>Logistique Incluse</strong> : Nous gérons la livraison pour vous.</li>
+                        <li>💰 <strong>Paiements Sécurisés</strong> : Recevez vos gains par Orange Money ou Virement.</li>
+                        <li>📱 <strong>Support Dédié</strong> : Une équipe pour vous aider à réussir.</li>
+                    </ul>
+                </div>
+
+                <div class="vendeur-form-card">
+                    <h4>Candidature Vendeur</h4>
+                    <form id="seller-request-form">
+                        <div class="form-group">
+                            <label>Nom de votre boutique / Entreprise</label>
+                            <input type="text" id="store-name" required placeholder="Ex: Diallo Elégance">
+                        </div>
+                        <div class="form-group">
+                            <label>Nom complet du responsable</label>
+                            <input type="text" id="contact-name" required>
+                        </div>
+                        <div class="form-group-row">
+                            <div class="form-group">
+                                <label>Téléphone (WhatsApp)</label>
+                                <input type="tel" id="phone" required placeholder="+224...">
+                            </div>
+                            <div class="form-group">
+                                <label>Email (Optionnel)</label>
+                                <input type="email" id="email">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Principale catégorie de produits</label>
+                            <select id="category-seller">
+                                <option value="Mode">Mode & Vêtements</option>
+                                <option value="Accessoires">Bijoux & Accessoires</option>
+                                <option value="High-Tech">Electronique & Tech</option>
+                                <option value="Autre">Autre</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Envoyer ma candidature</button>
+                    </form>
+                    <div id="seller-success" style="display:none; text-align:center; padding: 2rem;">
+                        <h5 style="color:var(--accent); font-size:1.2rem; margin-bottom:1rem;">Candidature envoyée !</h5>
+                        <p>Merci ! Notre équipe analysera votre demande et vous contactera sous 48h.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-bottom">
+            <p>&copy; 2026 DIALLO DIGITAL Marketplace. Conakry, Guinée.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('seller-request-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = {
+                store_name: document.getElementById('store-name').value,
+                contact_name: document.getElementById('contact-name').value,
+                phone: document.getElementById('phone').value,
+                email: document.getElementById('email').value,
+                category: document.getElementById('category-seller').value
+            };
+
+            try {
+                const response = await fetch('/api/seller-requests', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                const result = await response.json();
+                if (result.message === 'success') {
+                    document.getElementById('seller-request-form').style.display = 'none';
+                    document.getElementById('seller-success').style.display = 'block';
+                }
+            } catch (err) {
+                alert("Erreur lors de l'envoi. Veuillez réessayer.");
+            }
+        });
+    </script>
+</body>
+</html>

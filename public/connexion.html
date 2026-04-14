@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion & Inscription - Diallo Digital</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .auth-container {
+            max-width: 450px;
+            margin: 4rem auto;
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+        .auth-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 1rem;
+        }
+        .auth-tab {
+            flex: 1;
+            text-align: center;
+            padding: 0.5rem;
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--text-muted);
+            transition: var(--transition);
+        }
+        .auth-tab.active {
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+        }
+        .auth-form {
+            display: none;
+        }
+        .auth-form.active {
+            display: block;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+            font-size: 0.9rem;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            color: var(--text);
+        }
+        .btn-auth {
+            width: 100%;
+            padding: 1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .btn-auth:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+        }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 1.5rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        .back-link:hover {
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body class="dark-theme">
+
+    <div class="auth-container">
+        <div style="text-align: center; margin-bottom: 2rem;">
+            <h2 style="font-family: 'Outfit', sans-serif; font-size: 2rem; background: linear-gradient(135deg, #60a5fa, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">DIALLO DIGITAL.</h2>
+            <p style="color: var(--text-muted); margin-top: 0.5rem;">Votre Espace Personnel</p>
+        </div>
+
+        <div class="auth-tabs">
+            <div class="auth-tab active" id="tab-login" onclick="switchTab('login')">Se Connecter</div>
+            <div class="auth-tab" id="tab-register" onclick="switchTab('register')">S'inscrire</div>
+        </div>
+
+        <!-- Formulaire de Connexion -->
+        <form id="form-login" class="auth-form active">
+            <div class="form-group">
+                <label>Numéro de téléphone</label>
+                <input type="tel" id="login-phone" placeholder="Ex: 611 760 045" required>
+            </div>
+            <div class="form-group">
+                <label>Mot de passe</label>
+                <input type="password" id="login-pwd" placeholder="Votre mot de passe" required>
+            </div>
+            <button type="submit" class="btn-auth">Connexion</button>
+        </form>
+
+        <!-- Formulaire d'Inscription -->
+        <form id="form-register" class="auth-form">
+            <div class="form-group">
+                <label>Nom complet</label>
+                <input type="text" id="reg-name" placeholder="Ex: Amadou Diallo" required>
+            </div>
+            <div class="form-group">
+                <label>Numéro de téléphone</label>
+                <input type="tel" id="reg-phone" placeholder="Ex: 611 760 045" required>
+            </div>
+            <div class="form-group">
+                <label>Mot de passe</label>
+                <input type="password" id="reg-pwd" placeholder="Créez un mot de passe" required>
+            </div>
+            <button type="submit" class="btn-auth">Créer mon compte</button>
+        </form>
+
+        <a href="index.html" class="back-link">Retour à la boutique</a>
+    </div>
+
+    <script>
+        function switchTab(tab) {
+            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+            document.getElementById('tab-' + tab).classList.add('active');
+            document.getElementById('form-' + tab).classList.add('active');
+        }
+
+        document.getElementById('form-register').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const fullName = document.getElementById('reg-name').value;
+            const phone = document.getElementById('reg-phone').value;
+            const password = document.getElementById('reg-pwd').value;
+
+            try {
+                const res = await fetch('/api/auth/customer-register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ fullName, phone, password })
+                });
+                const data = await res.json();
+                if (data.token) {
+                    localStorage.setItem('customer_token', data.token);
+                    localStorage.setItem('customer_info', JSON.stringify(data.user));
+                    window.location.href = 'mon-compte.html';
+                } else {
+                    alert(data.error || "Erreur d'inscription");
+                }
+            } catch (err) { alert("Erreur serveur."); }
+        });
+
+        document.getElementById('form-login').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const phone = document.getElementById('login-phone').value;
+            const password = document.getElementById('login-pwd').value;
+
+            try {
+                const res = await fetch('/api/auth/customer-login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone, password })
+                });
+                const data = await res.json();
+                if (data.token) {
+                    localStorage.setItem('customer_token', data.token);
+                    localStorage.setItem('customer_info', JSON.stringify(data.user));
+                    window.location.href = 'mon-compte.html';
+                } else {
+                    alert(data.error || "Erreur de connexion");
+                }
+            } catch (err) { alert("Erreur serveur."); }
+        });
+        
+        // Auto redirect if already logged in
+        if(localStorage.getItem('customer_token')) {
+            window.location.href = 'mon-compte.html';
+        }
+    </script>
+</body>
+</html>

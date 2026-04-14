@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Devenez Vendeur Partenaire - Diallo Digital</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .seller-hero {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            padding: 6rem 2rem;
+            text-align: center;
+            color: white;
+            border-bottom: 1px solid var(--border);
+        }
+        .seller-hero h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .seller-hero p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+        .form-container {
+            max-width: 600px;
+            margin: -3rem auto 4rem;
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 3rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+            font-weight: 500;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            color: var(--text);
+            font-family: inherit;
+        }
+        .btn-submit {
+            width: 100%;
+            padding: 1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .btn-submit:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+        }
+        .benefits-grid {
+            max-width: 1000px;
+            margin: 4rem auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            padding: 0 2rem;
+        }
+        .benefit-card {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+        .benefit-card h3 {
+            color: var(--text);
+            margin-bottom: 1rem;
+            font-family: 'Outfit', sans-serif;
+        }
+        .benefit-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body class="dark-theme">
+
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <span style="color: var(--primary);">DIALLO</span> DIGITAL.
+            </a>
+            <div class="nav-links">
+                <a href="index.html">Boutique</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="seller-hero">
+        <h1>Développez votre commerce</h1>
+        <p>Vendez vos produits sur Diallo Digital, la marketplace tech de référence en Guinée. Gagnez en visibilité et profitez de notre réseau de livraison !</p>
+    </section>
+
+    <div class="form-container">
+        <form id="seller-form">
+            <div class="form-group">
+                <label>Nom de votre Boutique</label>
+                <input type="text" id="store-name" required placeholder="Ex: TechShop GN">
+            </div>
+            <div class="form-group">
+                <label>Nom et Prénom du Gérant</label>
+                <input type="text" id="owner-name" required placeholder="Votre nom complet">
+            </div>
+            <div class="form-group">
+                <label>Numéro de Téléphone (WhatsApp de préférence)</label>
+                <input type="tel" id="store-phone" required placeholder="Ex: 620 00 00 00">
+            </div>
+            <div class="form-group">
+                <label>Adresse E-mail (Facultatif)</label>
+                <input type="email" id="store-email" placeholder="contact@boutique.com">
+            </div>
+            <div class="form-group">
+                <label>Catégorie principale de produits</label>
+                <select id="store-category" required>
+                    <option value="">Sélectionnez...</option>
+                    <option value="Smartphones & Tablettes">Smartphones & Tablettes</option>
+                    <option value="Accessoires (Coques, Chargeurs)">Accessoires (Coques, Chargeurs)</option>
+                    <option value="Audio (AirPods, Casques)">Audio (AirPods, Casques)</option>
+                    <option value="Informatique (PC, Clés USB)">Informatique (PC, Clés USB)</option>
+                    <option value="Électronique diverse">Électronique diverse</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Choisissez un mot de passe (pour votre futur dashboard)</label>
+                <input type="password" id="store-pwd" required placeholder="Mot de passe sécurisé">
+            </div>
+            <button type="submit" class="btn-submit">Soumettre ma candidature</button>
+            <div id="form-msg" style="text-align: center; margin-top: 1rem; color: #10b981; font-weight: 500;"></div>
+        </form>
+    </div>
+
+    <section class="benefits-grid">
+        <div class="benefit-card">
+            <div class="benefit-icon">🚀</div>
+            <h3>Visibilité Maximale</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">Profitez de notre trafic quotidien. Vos produits accèdent directement à des milliers de clients ciblés.</p>
+        </div>
+        <div class="benefit-card">
+            <div class="benefit-icon">🚚</div>
+            <h3>Livraison Gérée</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">Ne vous souciez plus des expéditions. Notre module de livraison se charge d'acheminer vos produits au client !</p>
+        </div>
+        <div class="benefit-card">
+            <div class="benefit-icon">💎</div>
+            <h3>Image Premium</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">Vendez vos articles dans un écrin esthétique de très haute qualité qui rassure et convertit mieux les acheteurs.</p>
+        </div>
+    </section>
+
+    <footer style="text-align: center; padding: 2rem; border-top: 1px solid var(--border); margin-top: 4rem; color: var(--text-muted);">
+        <p>&copy; 2026 Diallo Digital Marketplace. Tous droits réservés.</p>
+    </footer>
+
+    <script>
+        document.getElementById('seller-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.querySelector('.btn-submit');
+            btn.textContent = 'Envoi en cours...';
+            btn.disabled = true;
+
+            const payload = {
+                store_name: document.getElementById('store-name').value,
+                owner_name: document.getElementById('owner-name').value,
+                phone: document.getElementById('store-phone').value,
+                email: document.getElementById('store-email').value,
+                category: document.getElementById('store-category').value,
+                password: document.getElementById('store-pwd').value
+            };
+
+            try {
+                const res = await fetch('/api/sellers/apply', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await res.json();
+                const msgEl = document.getElementById('form-msg');
+
+                if (res.ok) {
+                    msgEl.style.color = '#10b981';
+                    msgEl.textContent = result.message;
+                    document.getElementById('seller-form').reset();
+                } else {
+                    msgEl.style.color = '#ef4444';
+                    msgEl.textContent = result.error || 'Erreur lors de la soumission.';
+                }
+            } catch (err) {
+                alert("Erreur de connexion au serveur.");
+            } finally {
+                btn.textContent = 'Soumettre ma candidature';
+                btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>

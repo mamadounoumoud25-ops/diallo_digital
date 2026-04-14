@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Compte - Diallo Digital</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .account-layout {
+            max-width: 1000px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 2rem;
+        }
+        .account-sidebar {
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            height: fit-content;
+        }
+        .user-info {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .user-avatar {
+            width: 80px;
+            height: 80px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0 auto 1rem;
+        }
+        .nav-link {
+            display: block;
+            padding: 0.8rem 1rem;
+            color: var(--text);
+            text-decoration: none;
+            border-radius: var(--radius-md);
+            margin-bottom: 0.5rem;
+            transition: var(--transition);
+        }
+        .nav-link:hover, .nav-link.active {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--primary);
+        }
+        .logout-btn {
+            display: block;
+            width: 100%;
+            padding: 0.8rem;
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: var(--radius-md);
+            text-align: center;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: var(--transition);
+        }
+        .logout-btn:hover {
+            background: #ef4444;
+            color: white;
+        }
+        
+        .account-content {
+            background: rgba(30, 41, 59, 0.3);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+        }
+        .order-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .status-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        .status-attente { background: #fef08a; color: #854d0e; }
+        .status-expediee { background: #bae6fd; color: #0369a1; }
+        .status-livree { background: #bbf7d0; color: #166534; }
+        
+        .order-items { margin: 0; padding-left: 1.2rem; color: var(--text-muted); font-size: 0.9rem; }
+    </style>
+</head>
+<body class="dark-theme">
+
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <span style="color: var(--primary);">DIALLO</span> DIGITAL.
+            </a>
+            <div class="nav-links">
+                <a href="index.html">Retour Boutique</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="account-layout">
+        <aside class="account-sidebar">
+            <div class="user-info">
+                <div class="user-avatar" id="avatar-letter">U</div>
+                <h3 id="user-name-display" style="margin-bottom: 0.2rem;">Client</h3>
+                <small id="user-phone-display" style="color: var(--text-muted);">000000000</small>
+            </div>
+            <nav>
+                <a href="#" class="nav-link active" onclick="switchSection('orders')">📦 Mes Commandes</a>
+                <a href="#" class="nav-link" onclick="switchSection('profile')">👤 Mes Informations</a>
+            </nav>
+            <button class="logout-btn" onclick="logout()">Se Déconnecter</button>
+        </aside>
+
+        <main class="account-content">
+            <!-- Section Commandes -->
+            <div id="section-orders">
+                <h2 style="margin-bottom: 1.5rem; font-family: 'Outfit';">Historique de vos commandes</h2>
+                <div id="orders-container">
+                    <p>Chargement des commandes...</p>
+                </div>
+            </div>
+
+            <!-- Section Profil -->
+            <div id="section-profile" style="display: none;">
+                <h2 style="margin-bottom: 1.5rem; font-family: 'Outfit';">Mes Informations</h2>
+                <form id="profile-form">
+                    <div style="margin-bottom: 1.2rem;">
+                        <label style="display:block; margin-bottom:0.5rem; font-size:0.9rem;">Nom complet</label>
+                        <input type="text" id="prof-name" style="width:100%; padding:0.8rem; background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-md); color:var(--text);" required>
+                    </div>
+                    <div style="margin-bottom: 1.2rem;">
+                        <label style="display:block; margin-bottom:0.5rem; font-size:0.9rem;">Numéro de téléphone</label>
+                        <input type="text" id="prof-phone" style="width:100%; padding:0.8rem; background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-md); color:var(--text-muted);" disabled>
+                    </div>
+                    <div style="margin-bottom: 1.2rem;">
+                        <label style="display:block; margin-bottom:0.5rem; font-size:0.9rem;">Zone de livraison par défaut</label>
+                        <select id="prof-zone" style="width:100%; padding:0.8rem; background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-md); color:var(--text); font-family:inherit;">
+                            <option value="">Sélectionnez une zone...</option>
+                        </select>
+                    </div>
+                    <div style="margin-bottom: 2rem;">
+                        <label style="display:block; margin-bottom:0.5rem; font-size:0.9rem;">Adresse précise par défaut</label>
+                        <input type="text" id="prof-address" style="width:100%; padding:0.8rem; background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-md); color:var(--text);" placeholder="Quartier, Point de repère...">
+                    </div>
+                    <button type="submit" style="width:100%; padding:1rem; background:var(--primary); color:white; border:none; border-radius:var(--radius-md); font-weight:600; cursor:pointer;">Enregistrer les modifications</button>
+                    <div id="prof-msg" style="margin-top:1rem; text-align:center; font-size:0.9rem;"></div>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const token = localStorage.getItem('customer_token');
+        const userInfo = JSON.parse(localStorage.getItem('customer_info'));
+
+        if (!token || !userInfo) {
+            window.location.href = 'connexion.html';
+        }
+
+        document.getElementById('user-name-display').textContent = userInfo.full_name;
+        document.getElementById('user-phone-display').textContent = userInfo.phone;
+        document.getElementById('avatar-letter').textContent = userInfo.full_name.charAt(0).toUpperCase();
+
+        // Fill Profile Form
+        document.getElementById('prof-name').value = userInfo.full_name;
+        document.getElementById('prof-phone').value = userInfo.phone;
+        document.getElementById('prof-address').value = userInfo.address || '';
+
+        function switchSection(section) {
+            document.getElementById('section-orders').style.display = section === 'orders' ? 'block' : 'none';
+            document.getElementById('section-profile').style.display = section === 'profile' ? 'block' : 'none';
+            
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('onclick').includes(section)) link.classList.add('active');
+            });
+        }
+
+        async function fetchDeliveryZones() {
+            try {
+                const response = await fetch('/api/delivery-zones');
+                const result = await response.json();
+                if (result.message === 'success') {
+                    const select = document.getElementById('prof-zone');
+                    result.data.forEach(zone => {
+                        const option = document.createElement('option');
+                        option.value = zone.name;
+                        option.textContent = zone.name;
+                        if (userInfo.delivery_zone === zone.name) option.selected = true;
+                        select.appendChild(option);
+                    });
+                }
+            } catch (err) { console.error(err); }
+        }
+
+        document.getElementById('profile-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const fullName = document.getElementById('prof-name').value;
+            const delivery_zone = document.getElementById('prof-zone').value;
+            const address = document.getElementById('prof-address').value;
+            const msgEl = document.getElementById('prof-msg');
+
+            try {
+                const res = await fetch('/api/customer/profile', {
+                    method: 'PUT',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    body: JSON.stringify({ fullName, delivery_zone, address })
+                });
+                const result = await res.json();
+                if (res.ok) {
+                    msgEl.style.color = '#10b981';
+                    msgEl.textContent = "Profil mis à jour avec succès !";
+                    // Update local storage
+                    userInfo.full_name = fullName;
+                    userInfo.delivery_zone = delivery_zone;
+                    userInfo.address = address;
+                    localStorage.setItem('customer_info', JSON.stringify(userInfo));
+                    // Update UI
+                    document.getElementById('user-name-display').textContent = fullName;
+                } else {
+                    msgEl.style.color = '#ef4444';
+                    msgEl.textContent = result.error || "Erreur de mise à jour.";
+                }
+            } catch (err) { msgEl.textContent = "Erreur serveur."; }
+        });
+
+        async function loadMyOrders() {
+            try {
+                const res = await fetch('/api/customer/orders', {
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+                const result = await res.json();
+                
+                const container = document.getElementById('orders-container');
+                container.innerHTML = '';
+                
+                if (result.data && result.data.length > 0) {
+                    result.data.forEach(order => {
+                        let itemsHtml = '';
+                        try {
+                            const items = JSON.parse(order.items);
+                            itemsHtml = '<ul class="order-items">';
+                            items.forEach(i => {
+                                itemsHtml += `<li>${i.quantity}x ${i.name}</li>`;
+                            });
+                            itemsHtml += '</ul>';
+                        } catch(e) {}
+
+                        // Status Color Mapping
+                        let statusClass = 'status-attente';
+                        if (order.status.toLowerCase().includes('expédié')) statusClass = 'status-expediee';
+                        if (order.status.toLowerCase().includes('livré') || order.status === 'Payée') statusClass = 'status-livree';
+
+                        const date = new Date(order.created_at).toLocaleDateString('fr-FR');
+
+                        container.innerHTML += `
+                            <div class="order-card">
+                                <div class="order-header">
+                                    <div>
+                                        <strong>Commande #${order.id.toString().padStart(5, '0')}</strong>
+                                        <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem;">Passée le ${date}</div>
+                                    </div>
+                                    <div>
+                                        <span class="status-badge ${statusClass}">${order.status}</span>
+                                    </div>
+                                </div>
+                                <div style="margin-bottom: 1rem;">
+                                    ${itemsHtml}
+                                </div>
+                                <div style="border-top: 1px dashed var(--border); padding-top: 1rem; display: flex; justify-content: space-between; align-items: center;">
+                                    <span style="color: var(--text-muted); font-size: 0.9rem;">Total Payé</span>
+                                    <strong style="font-size: 1.1rem; color: var(--primary);">${order.total.toLocaleString()} GNF</strong>
+                                </div>
+                            </div>
+                        `;
+                    });
+                } else {
+                    container.innerHTML = `<div style="text-align: center; padding: 3rem; color: var(--text-muted); background: var(--bg-card); border-radius: var(--radius-md);">Vous n'avez pas encore passé de commande.</div>`;
+                }
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('customer_token');
+            localStorage.removeItem('customer_info');
+            window.location.href = 'index.html';
+        }
+
+        loadMyOrders();
+        fetchDeliveryZones();
+    </script>
+</body>
+</html>
