@@ -1,5 +1,8 @@
 {
   "name": "mon-site",
+  "engines": {
+    "node": "20.x"
+  },
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
