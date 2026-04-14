@@ -1068,8 +1068,13 @@ input[type="range"]::-webkit-slider-runnable-track {
     }
 
     .header-actions .icon-btn {
-        width: 32px;
-        height: 32px;
+        width: 28px;
+        height: 28px;
+    }
+
+    .header-actions .icon-btn svg {
+        width: 18px;
+        height: 18px;
     }
 
     .search-container {
