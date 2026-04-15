@@ -1027,12 +1027,18 @@ input[type="range"]::-webkit-slider-runnable-track {
    Responsive UI - Mobile Optimization
    ========================================================================== */
 @media (max-width: 768px) {
-    /* Global fixes */
-    .container {
-        padding: 0 1rem;
+    /* Global anti-overflow fixes */
+    html, body {
+        overflow-x: hidden !important;
+        width: 100% !important;
+        position: relative;
+        margin: 0;
+        padding: 0;
     }
 
-    body {
+    .container {
+        padding: 0 1rem;
+        max-width: 100% !important;
         overflow-x: hidden;
     }
 
