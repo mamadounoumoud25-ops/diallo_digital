@@ -7,6 +7,8 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const multer = require('multer');
 const fs = require('fs');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
 const { notifyAdminNewOrder, notifySellerLowStock } = require('./services/emailService');
 
 const app = express();
@@ -32,7 +34,19 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-// Middlewares
+// Middlewares de Sécurité
+app.use(helmet({
+    contentSecurityPolicy: false, // Désactivé pour permettre le chargement d'images externes (Amazon, Apple, etc.)
+}));
+
+// Limitation de débit (Rate Limiting)
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // Limite chaque IP à 100 requêtes par fenêtre
+    message: { error: "Trop de requêtes effectuées depuis cette IP, veuillez réessayer plus tard." }
+});
+app.use('/api/', limiter); // Appliquer uniquement aux routes API
+
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));

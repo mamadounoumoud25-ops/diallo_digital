@@ -1149,6 +1149,38 @@ input[type="range"]::-webkit-slider-runnable-track {
         gap: 2rem;
     }
 
+    /* Product Detail Page */
+    .product-detail-grid {
+        grid-template-columns: 1fr !important;
+        gap: 2rem !important;
+        padding-top: 1rem;
+    }
+
+    .detail-images {
+        max-width: 100%;
+    }
+
+    .detail-info {
+        padding: 0 0.5rem;
+    }
+
+    .detail-info h1 {
+        font-size: 1.8rem !important;
+    }
+
+    .detail-price {
+        font-size: 1.5rem !important;
+    }
+
+    .detail-actions {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .add-to-cart-btn {
+        width: 100% !important;
+    }
+
     /* Reviews Grid */
     .reviews-grid {
         grid-template-columns: 1fr !important;
