@@ -806,16 +806,19 @@ function updateCartIcon() {
 function renderCartItems() {
     const container = document.getElementById('cart-items-container');
     const footerEl = document.getElementById('cart-footer');
+    const formEl = document.getElementById('checkout-form');
     
     if (!container) return;
     
     if (cart.length === 0) {
         container.innerHTML = '<div class="empty-cart">Votre panier est vide</div>';
         if (footerEl) footerEl.style.display = 'none';
+        if (formEl) formEl.style.display = 'none';
         return;
     }
 
     if (footerEl) footerEl.style.display = 'block';
+    if (formEl) formEl.style.display = 'block';
 
     container.innerHTML = '';
     let subtotal = 0;
@@ -830,18 +833,16 @@ function renderCartItems() {
 
         const el = document.createElement('div');
         el.className = 'cart-item-row';
-        el.style.display = 'flex';
-        el.style.gap = '1rem';
-        el.style.marginBottom = '1.5rem';
-        el.style.alignItems = 'center';
         
         el.innerHTML = `
-            <img src="${item.image}" style="width: 60px; height: 60px; border-radius: 8px; object-fit: cover;">
-            <div style="flex: 1;">
-                <div style="font-weight: 600; font-size: 0.9rem;">${item.name}</div>
-                <div style="font-size: 0.8rem; color: #64748b;">${item.quantity} x ${formatCurrency(item.price)}</div>
+            <img src="${item.image}" alt="${item.name}">
+            <div class="cart-item-info" style="flex: 1;">
+                <div class="cart-item-title" style="font-weight: 600; font-size: 0.95rem; color: var(--text-primary); margin-bottom: 0.2rem;">${item.name}</div>
+                <div class="cart-item-price" style="font-size: 0.85rem; color: var(--text-secondary);">
+                    ${item.quantity} x <span style="color: var(--accent); font-weight: 600;">${formatCurrency(item.price)}</span>
+                </div>
             </div>
-            <button onclick="removeFromCart(${item.id})" style="background: none; border: none; color: #ef4444; cursor: pointer;">&times;</button>
+            <button onclick="removeFromCart(${item.id})" class="remove-item-btn" style="background: rgba(239, 68, 68, 0.1); border: none; color: #ef4444; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s;">&times;</button>
         `;
         container.appendChild(el);
     });
