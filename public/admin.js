@@ -22,17 +22,15 @@ async function fetchAuth(url, options = {}) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Bouton de déconnexion
-    const logoutBtn = document.createElement('a');
-    logoutBtn.href = '#';
-    logoutBtn.className = 'nav-item';
-    logoutBtn.innerHTML = 'Déconnexion';
-    logoutBtn.style.color = '#ef4444';
-    logoutBtn.onclick = () => {
-        localStorage.removeItem('adminToken');
-        window.location.href = 'login.html';
-    };
-    document.querySelector('.sidebar-nav').appendChild(logoutBtn);
+    // Bouton de déconnexion déjà présent dans le HTML (admin.html)
+    const logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn) {
+        logoutBtn.onclick = (e) => {
+            e.preventDefault();
+            localStorage.removeItem('adminToken');
+            window.location.href = 'login.html';
+        };
+    }
 
     setupTabs();
     setupModal();

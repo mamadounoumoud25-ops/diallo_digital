@@ -3,104 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Vendeur - Diallo Digital</title>
+    <title>Dashboard Vendeur | Diallo Digital</title>
+    
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="admin.css"> <!-- Reusing admin styles for consistency -->
+    <link rel="stylesheet" href="admin.css">
     <style>
-        .seller-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
+        .badge-commission {
+            background: rgba(248, 113, 113, 0.1);
+            color: #f87171;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 700;
         }
         .stat-card-seller {
-            background: rgba(30, 41, 59, 0.5);
+            background: var(--dash-surface);
             padding: 1.5rem;
-            border-radius: var(--radius-lg);
-            border: 1px solid var(--border);
+            border-radius: var(--dash-radius);
+            border: 1px solid var(--dash-border);
+            box-shadow: var(--dash-shadow);
         }
-        .stat-card-seller h4 {
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            margin-bottom: 0.5rem;
-        }
-        .stat-card-seller .value {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: white;
-            font-family: 'Outfit';
-        }
-        .badge-status {
-            padding: 0.2rem 0.6rem;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-        .status-pending { background: #fef3c7; color: #92400e; }
-        .status-approved { background: #dcfce7; color: #166534; }
     </style>
 </head>
-<body class="admin-body dark-theme">
+<body class="admin-body">
     <div class="admin-layout">
+        <!-- Sidebar -->
         <aside class="sidebar">
             <div class="sidebar-header">
                 <h2 id="store-name-aside">BOUTIQUE</h2>
-                <span class="badge" style="background: var(--secondary);">VENDEUR</span>
+                <div class="badge">Espace Partenaire</div>
             </div>
             <nav class="sidebar-nav">
-                <a href="#" class="nav-item active" data-tab="stats">📊 Statistiques</a>
-                <a href="#" class="nav-item" data-tab="my-products">📦 Mes Produits</a>
-                <a href="#" class="nav-item" data-tab="my-orders">🧾 Mes Ventes</a>
-                <a href="index.html" class="nav-item">⬅️ Boutique</a>
-                <a href="#" class="logout-btn" onclick="logout()" style="color: #ef4444; margin-top: auto;">Déconnexion</a>
+                <a href="#" class="nav-item active" data-tab="stats">
+                    📊 Mon Tableau de Bord
+                </a>
+                <a href="#" class="nav-item" data-tab="my-products">
+                    📦 Mes Produits
+                </a>
+                <a href="#" class="nav-item" data-tab="my-orders">
+                    🧾 Mes Ventes
+                </a>
+                
+                <div style="margin-top: auto; padding-top: 2rem;">
+                    <a href="index.html" class="nav-item" style="border: 1px solid var(--dash-border);">
+                        ⬅️ Voir la Boutique
+                    </a>
+                    <a href="#" class="logout-btn" onclick="logout()">
+                        Se Déconnecter
+                    </a>
+                </div>
             </nav>
         </aside>
 
+        <!-- Main Content -->
         <main class="admin-main">
             <header class="admin-header">
-                <h1 id="tab-title">Mon Tableau de Bord</h1>
+                <h1 id="tab-title">Mon Dashboard</h1>
                 <div class="user-profile">
                     <span id="store-owner-name">Partenaire</span>
+                    <div class="avatar">🏪</div>
                 </div>
             </header>
 
             <div class="admin-content">
                 <!-- Tab Stats -->
                 <section id="tab-stats" class="tab-pane active">
-                    <div class="seller-stats">
-                        <div class="stat-card-seller">
-                            <h4>Chiffre d'Affaires (Brut)</h4>
-                            <div class="value" id="stat-brut">0 GNF</div>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-title">Ventes Brutes (Total)</div>
+                            <div class="stat-value" id="stat-brut">0 GNF</div>
                         </div>
-                        <div class="stat-card-seller">
-                            <h4>Commission Diallo (10%)</h4>
-                            <div class="value" id="stat-commission" style="color: #f87171;">-0 GNF</div>
+                        <div class="stat-card">
+                            <div class="stat-title">Commission (10%) <span class="badge-commission">Auto</span></div>
+                            <div class="stat-value" id="stat-commission" style="color: #f87171;">-0 GNF</div>
                         </div>
-                        <div class="stat-card-seller">
-                            <h4>Revenu Net à recevoir</h4>
-                            <div class="value" id="stat-net" style="color: #4ade80;">0 GNF</div>
+                        <div class="stat-card">
+                            <div class="stat-title">Revenu Net à Percevoir</div>
+                            <div class="stat-value" id="stat-net" style="color: #4ade80;">0 GNF</div>
                         </div>
+                    </div>
+                    
+                    <div style="margin-top: 3rem; text-align: center; color: var(--dash-text-muted);">
+                        <p style="font-size: 0.9rem;">💡 Vos commissions sont automatiquement déduites de vos ventes.</p>
                     </div>
                 </section>
 
                 <!-- Tab Products -->
                 <section id="tab-my-products" class="tab-pane">
-                    <div class="section-top" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-                        <h2>Gérer mon catalogue</h2>
-                        <button class="btn-primary" onclick="openAddProductModal()">+ Ajouter un produit</button>
+                    <div class="section-top">
+                        <h2>Mon Catalogue Exposé</h2>
+                        <button class="btn-primary" onclick="openAddProductModal()">✨ Publier un article</button>
                     </div>
                     <div class="table-container">
                         <table class="data-table">
                             <thead>
                                 <tr>
-                                    <th>Image</th>
-                                    <th>Nom</th>
-                                    <th>Prix</th>
-                                    <th>Stock</th>
-                                    <th>Statut</th>
+                                    <th>Aperçu</th>
+                                    <th>Nom & Rayon</th>
+                                    <th>Prix unitaire</th>
+                                    <th>En Stock</th>
+                                    <th>État</th>
                                 </tr>
                             </thead>
                             <tbody id="seller-products-list"></tbody>
@@ -110,16 +118,18 @@
 
                 <!-- Tab Orders -->
                 <section id="tab-my-orders" class="tab-pane">
-                    <h2>Mes Ventes Récentes</h2>
+                    <div class="section-top">
+                        <h2>Historique des Ventes</h2>
+                    </div>
                     <div class="table-container">
                         <table class="data-table">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Date</th>
-                                    <th>Articles</th>
-                                    <th>Mon Brut</th>
-                                    <th>Statut Commande</th>
+                                    <th>ID Vente</th>
+                                    <th>Date d'achat</th>
+                                    <th>Détail Articles</th>
+                                    <th>Montant Brut</th>
+                                    <th>Suivi Livraison</th>
                                 </tr>
                             </thead>
                             <tbody id="seller-orders-list"></tbody>
@@ -130,23 +140,61 @@
         </main>
     </div>
 
-    <!-- Modal Ajout Produit -->
-    <div id="product-modal" class="modal" style="display: none; position: fixed; inset:0; background:rgba(0,0,0,0.8); z-index:100; align-items:center; justify-content:center;">
-        <div class="modal-content" style="background:var(--bg-card); padding:2rem; border-radius:12px; width:100%; max-width:500px; border:1px solid var(--border);">
-            <h3 style="margin-bottom: 1.5rem;">Nouveau Produit</h3>
+    <!-- Modal Ajout Produit (Repris du style admin pour cohérence) -->
+    <div id="product-modal" class="modal">
+        <div class="modal-content">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem;">
+                <h3>📦 Publier un nouveau produit</h3>
+                <button onclick="closeModal()" style="background:none; border:none; color:white; font-size:2rem; cursor:pointer;">&times;</button>
+            </div>
+            
             <form id="seller-add-product-form">
-                <input type="text" id="p-name" placeholder="Nom du produit" required style="width:100%; padding:0.8rem; margin-bottom:1rem; background:rgba(0,0,0,0.3); border:1px solid var(--border); color:white;">
-                <textarea id="p-desc" placeholder="Description courte" required style="width:100%; padding:0.8rem; margin-bottom:1rem; background:rgba(0,0,0,0.3); border:1px solid var(--border); color:white; height:100px;"></textarea>
-                <div style="display: flex; gap: 1rem;">
-                    <input type="number" id="p-price" placeholder="Prix (GNF)" required style="flex:1; padding:0.8rem; margin-bottom:1rem; background:rgba(0,0,0,0.3); border:1px solid var(--border); color:white;">
-                    <input type="number" id="p-stock" placeholder="Stock" required style="flex:1; padding:0.8rem; margin-bottom:1rem; background:rgba(0,0,0,0.3); border:1px solid var(--border); color:white;">
+                <div class="form-group">
+                    <label>Nom de l'article</label>
+                    <input type="text" id="p-name" placeholder="Ex: AirPods Pro 2" required>
                 </div>
-                <input type="text" id="p-category" placeholder="Catégorie" required style="width:100%; padding:0.8rem; margin-bottom:1rem; background:rgba(0,0,0,0.3); border:1px solid var(--border); color:white;">
-                <input type="text" id="p-image" placeholder="Lien image (URL)" required style="width:100%; padding:0.8rem; margin-bottom:1.5rem; background:rgba(0,0,0,0.3); border:1px solid var(--border); color:white;">
+                
+                <div class="form-group">
+                    <label>Description courte</label>
+                    <textarea id="p-desc" placeholder="Caractéristiques principales..." required style="height:80px;"></textarea>
+                </div>
+                
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+                    <div class="form-group">
+                        <label>Prix (GNF)</label>
+                        <input type="number" id="p-price" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Quantité</label>
+                        <input type="number" id="p-stock" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Rayon / Catégorie</label>
+                    <select id="p-category" required>
+                        <option value="">Sélectionnez...</option>
+                        <option value="Audio">Audio</option>
+                        <option value="Smartphones">Smartphones</option>
+                        <option value="Accessoires">Accessoires</option>
+                        <option value="Informatique">Informatique</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Lien Image (Direct URL)</label>
+                    <input type="url" id="p-image" placeholder="https://..." required>
+                </div>
+                
+                <div style="padding: 1rem; background: rgba(108, 99, 255, 0.05); border: 1px dashed var(--dash-border); border-radius: 10px; margin-bottom: 1.5rem;">
+                    <p style="font-size: 0.75rem; color: var(--dash-text-muted); text-align: center;">
+                        🛡️ Votre produit sera soumis à une validation rapide par l'administration avant d'être publié.
+                    </p>
+                </div>
                 
                 <div style="display: flex; gap: 1rem;">
-                    <button type="button" onclick="closeModal()" style="flex:1; padding:0.8rem; background:transparent; border:1px solid var(--border); color:white; cursor:pointer;">Annuler</button>
-                    <button type="submit" style="flex:1; padding:0.8rem; background:var(--primary); border:none; color:white; cursor:pointer; font-weight:600;">Soumettre</button>
+                    <button type="button" onclick="closeModal()" style="flex:1; padding:0.85rem; background:rgba(255,255,255,0.05); border:1px solid var(--dash-border); color:white; border-radius:10px; cursor:pointer; font-weight:600;">Annuler</button>
+                    <button type="submit" class="btn-primary" style="flex:1;">📤 Soumettre l'article</button>
                 </div>
             </form>
         </div>

@@ -3,16 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diallo Digital - Back-Office</title>
+    <title>Administration | Diallo Digital</title>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
     
     <!-- Styles -->
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="admin.css">
+    <style>
+        .image-preview-container {
+            width: 100%;
+            height: 120px;
+            border: 2px dashed var(--dash-border);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 1rem;
+            overflow: hidden;
+            background: rgba(0,0,0,0.2);
+        }
+        .image-preview-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .image-preview-placeholder {
+            color: var(--dash-text-muted);
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .btn-search-web {
+            background: rgba(108, 99, 255, 0.1);
+            border: 1px solid var(--dash-accent);
+            color: var(--dash-accent);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 0.5rem;
+        }
+        .btn-search-web:hover {
+            background: var(--dash-accent);
+            color: white;
+        }
+    </style>
 </head>
 <body class="admin-body">
     <div class="admin-layout">
@@ -20,43 +60,49 @@
         <aside class="sidebar">
             <div class="sidebar-header">
                 <h2>DIALLO DIGITAL.</h2>
-                <span class="badge">ADMIN</span>
+                <span class="badge">Espace Admin</span>
             </div>
             <nav class="sidebar-nav">
                 <a href="#" class="nav-item active" data-tab="dashboard">
                     📊 Tableau de bord
                 </a>
                 <a href="#" class="nav-item" data-tab="products">
-                    🛍️ Produits
+                    🛍️ Gestion Produits
                 </a>
                 <a href="#" class="nav-item" data-tab="orders">
-                    📦 Commandes
+                    📦 Les Commandes
                 </a>
                 <a href="#" class="nav-item" data-tab="reviews">
                     ⭐ Avis Clients
                 </a>
                 <a href="#" class="nav-item" data-tab="sellers">
-                    🤝 Vendeurs
+                    🤝 Partenaires
                 </a>
                 <a href="#" class="nav-item" data-tab="shipping">
-                    🚚 Livraison
+                    🚚 Zones Livraison
                 </a>
                 <a href="#" class="nav-item" data-tab="validation">
-                    ✨ Validation Produits
+                    ✨ Validations
                 </a>
-                <a href="index.html" class="nav-item retour-boutique">
-                    ⬅️ Boutique
-                </a>
+                
+                <div style="margin-top: auto; padding-top: 2rem;">
+                    <a href="index.html" class="nav-item" style="border: 1px solid var(--dash-border);">
+                        ⬅️ Voir la Boutique
+                    </a>
+                    <a href="#" class="logout-btn" id="logout-btn">
+                        Se Déconnecter
+                    </a>
+                </div>
             </nav>
         </aside>
 
         <!-- Main Content -->
         <main class="admin-main">
             <header class="admin-header">
-                <h1>Vue d'ensemble</h1>
+                <h1 id="tab-title">Vue d'ensemble</h1>
                 <div class="user-profile">
-                    <div class="avatar">A</div>
-                    <span>Admin</span>
+                    <span>Mamadou Noumou</span>
+                    <div class="avatar">MN</div>
                 </div>
             </header>
 
@@ -65,15 +111,15 @@
                 <section id="tab-dashboard" class="tab-pane active">
                     <div class="stats-grid">
                         <div class="stat-card">
-                            <div class="stat-title">Chiffre d'affaires</div>
+                            <div class="stat-title">Ventes Totales</div>
                             <div class="stat-value" id="stat-revenue">0 GNF</div>
                         </div>
                         <div class="stat-card">
-                            <div class="stat-title">Commandes en attente</div>
-                            <div class="stat-value" id="stat-pending" style="color:#f59e0b">0</div>
+                            <div class="stat-title">À Expédier</div>
+                            <div class="stat-value" id="stat-pending" style="color:#fbbf24">0</div>
                         </div>
                         <div class="stat-card">
-                            <div class="stat-title">Produits Actifs</div>
+                            <div class="stat-title">Catalogue Actif</div>
                             <div class="stat-value" id="stat-products">0</div>
                         </div>
                     </div>
@@ -82,24 +128,22 @@
                 <!-- Products Tab -->
                 <section id="tab-products" class="tab-pane">
                     <div class="section-top">
-                        <h2>Gestion des Produits</h2>
-                        <button class="btn btn-primary" id="add-product-btn">Ajouter un produit</button>
+                        <h2>Catalogue Produits</h2>
+                        <button class="btn-primary" id="add-product-btn">✨ Ajouter un produit</button>
                     </div>
                     <div class="table-container">
                         <table class="data-table" id="products-table">
                             <thead>
                                 <tr>
-                                    <th>Image</th>
-                                    <th>Nom</th>
+                                    <th>Aperçu</th>
+                                    <th>Désignation</th>
                                     <th>Catégorie</th>
                                     <th>Prix</th>
                                     <th>Stock</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <!-- Données chargées par JS -->
-                            </tbody>
+                            <tbody></tbody>
                         </table>
                     </div>
                 </section>
@@ -107,37 +151,35 @@
                 <!-- Orders Tab -->
                 <section id="tab-orders" class="tab-pane">
                     <div class="section-top">
-                        <h2>Dernières Commandes</h2>
+                        <h2>Journal des Ventes</h2>
                     </div>
                     <div class="table-container">
                         <table class="data-table" id="orders-table">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
+                                    <th>Invoice #</th>
                                     <th>Client</th>
                                     <th>Paiement</th>
-                                    <th>Total</th>
+                                    <th>Montant</th>
                                     <th>Statut</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <!-- Données chargées par JS -->
-                            </tbody>
+                            <tbody></tbody>
                         </table>
                     </div>
                 </section>
 
                 <!-- Reviews Tab -->
                 <section id="tab-reviews" class="tab-pane">
-                    <h2>Avis Clients</h2>
+                    <h2>Derniers Avis</h2>
                     <div class="table-container">
                         <table class="data-table" id="reviews-table">
                             <thead>
                                 <tr>
-                                    <th>Client</th>
+                                    <th>Nom Client</th>
                                     <th>Note</th>
                                     <th>Commentaire</th>
-                                    <th>Date</th>
+                                    <th>Horodatage</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -147,16 +189,16 @@
 
                 <!-- Sellers Tab -->
                 <section id="tab-sellers" class="tab-pane">
-                    <h2>Candidatures Vendeurs</h2>
+                    <h2>Gestion des Partenaires</h2>
                     <div class="table-container">
-                        <table class="data-table" id="sellers-table" style="font-size: 0.9rem;">
+                        <table class="data-table" id="sellers-table">
                             <thead>
                                 <tr>
-                                    <th>Boutique</th>
-                                    <th>Contact</th>
+                                    <th>Enseigne</th>
+                                    <th>Gérant</th>
                                     <th>WhatsApp</th>
-                                    <th>Catégorie</th>
-                                    <th>Statut / Action</th>
+                                    <th>Rayon</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -167,28 +209,27 @@
                 <!-- Shipping Tab -->
                 <section id="tab-shipping" class="tab-pane">
                     <div class="section-top">
-                        <h2>Zones de Livraison</h2>
-                        <button class="btn btn-primary" id="add-zone-btn">Ajouter une zone</button>
+                        <h2>Zones & Tarifs</h2>
+                        <button class="btn-primary" id="add-zone-btn">+ Nouvelle Zone</button>
                     </div>
                     <div class="table-container">
                         <table class="data-table" id="shipping-table">
                             <thead>
                                 <tr>
-                                    <th>Zone / Quartier</th>
-                                    <th>Prix de livraison (GNF)</th>
+                                    <th>District / Zone</th>
+                                    <th>Frais (GNF)</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <!-- Données chargées par JS -->
-                            </tbody>
+                            <tbody></tbody>
                         </table>
                     </div>
                 </section>
+                
                 <!-- Validation Products Tab -->
                 <section id="tab-validation" class="tab-pane">
-                    <h2>Nouveaux Produits en Attente</h2>
-                    <p style="color: var(--text-muted); margin-bottom: 2rem;">Vérifiez et approuvez les produits soumis par vos partenaires.</p>
+                    <h2>Approbation de Stock</h2>
+                    <p style="color: var(--dash-text-muted); margin-bottom: 2rem;">Vérifiez les soumissions de vos partenaires vendeurs.</p>
                     <div class="table-container">
                         <table class="data-table" id="pending-products-table">
                             <thead>
@@ -210,64 +251,89 @@
     </div>
 
     <!-- Modal Ajouter un Produit -->
-    <div class="modal-overlay" id="product-modal">
-        <div class="modal">
-            <div class="modal-header">
-                <h3>Ajouter un Produit</h3>
-                <button class="close-modal" id="close-modal-btn">&times;</button>
+    <div class="modal" id="product-modal">
+        <div class="modal-content">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem;">
+                <h3>📦 Fiche Produit</h3>
+                <button id="close-modal-btn" style="background:none; border:none; color:white; font-size:2rem; cursor:pointer;">&times;</button>
             </div>
-            <form id="product-form" class="modal-form">
-                <div class="form-group with-action">
-                    <div style="flex:1">
-                        <label>Nom du produit</label>
-                        <input type="text" id="p-name" required placeholder="Ex: Montre de luxe">
-                    </div>
-                    <button type="button" class="btn-search-web" id="btn-search-image" title="Rechercher des images sur Google">
-                        🔍 Rechercher
-                    </button>
-                </div>
+            
+            <form id="product-form">
                 <div class="form-group">
-                    <label>Description</label>
-                    <textarea id="p-desc" required></textarea>
+                    <label>Libellé du produit</label>
+                    <input type="text" id="p-name" required placeholder="Ex: AirPods Pro 2">
+                    <button type="button" class="btn-search-web" id="btn-search-image">🔍 Chercher sur le Web</button>
                 </div>
-                <div class="form-group-row">
+                
+                <div class="form-group">
+                    <label>Description détaillée</label>
+                    <textarea id="p-desc" required style="height:100px;"></textarea>
+                </div>
+                
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
                     <div class="form-group">
-                        <label>Prix (GNF)</label>
+                        <label>Tarif (GNF)</label>
                         <input type="number" id="p-price" required>
                     </div>
                     <div class="form-group">
-                        <label>Stock</label>
+                        <label>Stock Dispo</label>
                         <input type="number" id="p-stock" required>
                     </div>
                 </div>
-                <div class="form-group-row">
+                
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
                     <div class="form-group">
-                        <label>Catégorie</label>
+                        <label>Rayon / Catégorie</label>
                         <select id="p-category">
                             <option value="Mode">Mode</option>
                             <option value="Accessoires">Accessoires</option>
                             <option value="High-Tech">High-Tech</option>
+                            <option value="Audio">Audio</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Lien Vidéo (YouTube/Vimeo)</label>
-                        <input type="text" id="p-video-url" placeholder="https://www.youtube.com/watch?v=...">
+                        <label>Lien Vidéo (YT/MP4)</label>
+                        <input type="text" id="p-video-url" placeholder="https://...">
                     </div>
                 </div>
-                <div class="form-group-row">
+                
+                <div style="display:grid; grid-template-columns:1.5fr 1fr; gap:1rem;">
                     <div class="form-group">
-                        <label>Fichier Image (Upload)</label>
-                        <input type="file" id="p-image-file" accept="image/*">
+                        <label>Lien Direct Image</label>
+                        <input type="url" id="p-image-url" placeholder="Lien HTTP(S)">
                     </div>
                     <div class="form-group">
-                        <label>URL de l'image (Lien)</label>
-                        <input type="url" id="p-image-url" placeholder="https://...">
+                        <label>Uploader Photo</label>
+                        <input type="file" id="p-image-file" accept="image/*" style="padding:0.6rem; font-size:0.7rem;">
                     </div>
                 </div>
+
                 <div class="image-preview-container" id="image-preview-box">
-                    <span class="image-preview-placeholder">Aperçu de l'image</span>
+                    <span class="image-preview-placeholder">Aperçu visuel</span>
                 </div>
-                <button type="submit" class="btn btn-primary btn-block">Enregistrer</button>
+                
+                <button type="submit" class="btn-primary" style="width:100%; margin-top:2rem;">💾 Enregistrer le produit</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Zones Modal (Simple) -->
+    <div class="modal" id="zone-modal" style="display: none;">
+        <div class="modal-content">
+             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem;">
+                <h3>🚚 Nouvelle Zone</h3>
+                <button onclick="document.getElementById('zone-modal').style.display='none'" style="background:none; border:none; color:white; font-size:2rem; cursor:pointer;">&times;</button>
+            </div>
+            <form id="zone-form">
+                <div class="form-group">
+                    <label>Nom de la Zone</label>
+                    <input type="text" id="z-name" required placeholder="Ex: Kaloum">
+                </div>
+                <div class="form-group">
+                    <label>Frais de livraison (GNF)</label>
+                    <input type="number" id="z-price" required>
+                </div>
+                <button type="submit" class="btn-primary" style="width:100%; margin-top:1rem;">Ajouter la zone</button>
             </form>
         </div>
     </div>

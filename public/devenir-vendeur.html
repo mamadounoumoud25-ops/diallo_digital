@@ -6,217 +6,258 @@
     <title>Devenez Vendeur Partenaire - Diallo Digital</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <style>
         .seller-hero {
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            padding: 6rem 2rem;
+            padding: 8rem 2rem 6rem;
             text-align: center;
-            color: white;
-            border-bottom: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+        .seller-hero::before {
+            content: ''; position: absolute; width: 700px; height: 700px;
+            background: radial-gradient(circle, rgba(108,99,255,0.15) 0%, transparent 70%);
+            top: -200px; left: 50%; transform: translateX(-50%);
+            border-radius: 50%; pointer-events: none;
+        }
+        .seller-hero-badge {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            background: var(--glass-bg); border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px); padding: 0.5rem 1.2rem;
+            border-radius: 999px; font-size: 0.8rem; font-weight: 600;
+            color: var(--accent-2); text-transform: uppercase;
+            letter-spacing: 0.08em; margin-bottom: 2rem; position: relative; z-index: 2;
         }
         .seller-hero h1 {
-            font-family: 'Outfit', sans-serif;
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, #60a5fa, #a78bfa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-size: 4rem; margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #fff 0%, #a0a0cc 60%, var(--accent) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            position: relative; z-index: 2;
         }
         .seller-hero p {
-            font-size: 1.2rem;
-            color: var(--text-muted);
-            max-width: 600px;
-            margin: 0 auto 2rem;
-        }
-        .form-container {
-            max-width: 600px;
-            margin: -3rem auto 4rem;
-            background: rgba(30, 41, 59, 0.8);
-            backdrop-filter: blur(16px);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            padding: 3rem;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: var(--text);
-            font-weight: 500;
-        }
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 1rem;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            color: var(--text);
-            font-family: inherit;
-        }
-        .btn-submit {
-            width: 100%;
-            padding: 1rem;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: var(--radius-md);
-            font-weight: 600;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        .btn-submit:hover {
-            background: var(--primary-light);
-            transform: translateY(-2px);
+            font-size: 1.2rem; color: var(--text-secondary);
+            max-width: 600px; margin: 0 auto 3rem; position: relative; z-index: 2;
         }
         .benefits-grid {
-            max-width: 1000px;
-            margin: 4rem auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            padding: 0 2rem;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem; margin: 0 auto 5rem; max-width: 1200px; padding: 0 2rem;
         }
         .benefit-card {
-            background: var(--bg-card);
-            padding: 2rem;
-            border-radius: var(--radius-md);
-            border: 1px solid var(--border);
-            text-align: center;
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--radius-xl); padding: 2rem;
+            text-align: center; transition: transform var(--t-smooth), border-color var(--t-fast);
         }
-        .benefit-card h3 {
-            color: var(--text);
-            margin-bottom: 1rem;
-            font-family: 'Outfit', sans-serif;
+        .benefit-card:hover { transform: translateY(-6px); border-color: var(--border-glow); }
+        .benefit-icon { font-size: 2.5rem; margin-bottom: 1rem; display: block; }
+        .benefit-card h3 { color: var(--text-primary); margin-bottom: 0.8rem; font-size: 1.1rem; }
+        .benefit-card p { color: var(--text-secondary); font-size: 0.88rem; line-height: 1.7; }
+        .form-section {
+            max-width: 640px; margin: 0 auto 6rem; padding: 0 2rem;
         }
-        .benefit-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
+        .form-section h2 {
+            text-align: center; font-size: 2rem; margin-bottom: 0.8rem; color: var(--text-primary);
+        }
+        .form-section p.sub { text-align: center; color: var(--text-secondary); margin-bottom: 2.5rem; }
+        .form-card {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--radius-xl); padding: 2.5rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .form-group { margin-bottom: 1.3rem; }
+        .form-group label {
+            display: block; margin-bottom: 0.45rem; font-size: 0.78rem;
+            font-weight: 700; color: var(--text-muted);
+            text-transform: uppercase; letter-spacing: 0.06em;
+        }
+        .form-group input, .form-group select {
+            width: 100%; padding: 0.9rem 1rem;
+            background: var(--bg-elevated); border: 1.5px solid var(--border);
+            border-radius: var(--radius-md); color: var(--text-primary);
+            font-family: 'Inter', sans-serif; font-size: 0.95rem;
+            transition: border-color var(--t-fast);
+        }
+        .form-group input:focus, .form-group select:focus {
+            outline: none; border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(108,99,255,0.15);
+        }
+        .form-group input::placeholder { color: var(--text-muted); }
+        .form-group select { appearance: none; -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23a1a1a6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat; background-position: right 1rem center; background-size: 12px;
+        }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .btn-submit {
+            width: 100%; padding: 1.1rem;
+            background: linear-gradient(135deg, var(--accent), #8b5cf6);
+            color: white; border: none; border-radius: var(--radius-md);
+            font-weight: 700; font-size: 1rem; cursor: pointer;
+            font-family: 'Inter', sans-serif; margin-top: 0.5rem;
+            box-shadow: 0 8px 25px rgba(108,99,255,0.35);
+            transition: var(--t-fast);
+        }
+        .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 14px 35px rgba(108,99,255,0.5); }
+        #form-msg {
+            margin-top: 1rem; padding: 0.8rem; border-radius: var(--radius-sm);
+            font-size: 0.85rem; font-weight: 600; text-align: center; display: none;
+        }
+        .steps-row {
+            display: flex; justify-content: center; align-items: center; gap: 0;
+            margin: 0 auto 4rem; max-width: 700px; padding: 0 2rem;
+        }
+        .step {
+            flex: 1; text-align: center; position: relative;
+        }
+        .step-num {
+            width: 40px; height: 40px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), #8b5cf6);
+            color: white; font-weight: 900; font-size: 1rem;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 0.6rem; box-shadow: 0 4px 15px rgba(108,99,255,0.4);
+        }
+        .step-label { font-size: 0.78rem; color: var(--text-secondary); font-weight: 500; }
+        .step-line { width: 60px; height: 2px; background: var(--border); flex-shrink: 0; margin-bottom: 1.4rem; }
+        @media (max-width: 768px) {
+            .seller-hero h1 { font-size: 2.5rem; }
+            .form-row { grid-template-columns: 1fr; }
+            .steps-row { flex-wrap: wrap; gap: 1rem; }
+            .step-line { display: none; }
         }
     </style>
 </head>
-<body class="dark-theme">
-
-    <header class="navbar">
-        <div class="nav-container">
-            <a href="index.html" class="logo">
-                <span style="color: var(--primary);">DIALLO</span> DIGITAL.
-            </a>
-            <div class="nav-links">
-                <a href="index.html">Boutique</a>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo">
+                <a href="index.html" style="display:flex;align-items:center;gap:0.75rem;">
+                    <img src="img/logo.png" alt="Diallo Digital">
+                    <span>DIALLO DIGITAL.</span>
+                </a>
             </div>
+            <nav class="desktop-nav">
+                <ul class="nav-menu">
+                    <li><a href="index.html">Boutique</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="vendeur-login.html" class="active">Espace Vendeur</a></li>
+                </ul>
+            </nav>
         </div>
     </header>
 
+    <!-- Hero -->
     <section class="seller-hero">
-        <h1>Développez votre commerce</h1>
-        <p>Vendez vos produits sur Diallo Digital, la marketplace tech de référence en Guinée. Gagnez en visibilité et profitez de notre réseau de livraison !</p>
+        <div class="seller-hero-badge">🏪 Programme Partenaire 2026</div>
+        <h1>Vendez sur<br>Diallo Digital</h1>
+        <p>Rejoignez la marketplace tech #1 en Guinée. Accédez à des milliers de clients et développez votre commerce.</p>
     </section>
 
-    <div class="form-container">
-        <form id="seller-form">
-            <div class="form-group">
-                <label>Nom de votre Boutique</label>
-                <input type="text" id="store-name" required placeholder="Ex: TechShop GN">
-            </div>
-            <div class="form-group">
-                <label>Nom et Prénom du Gérant</label>
-                <input type="text" id="owner-name" required placeholder="Votre nom complet">
-            </div>
-            <div class="form-group">
-                <label>Numéro de Téléphone (WhatsApp de préférence)</label>
-                <input type="tel" id="store-phone" required placeholder="Ex: 620 00 00 00">
-            </div>
-            <div class="form-group">
-                <label>Adresse E-mail (Facultatif)</label>
-                <input type="email" id="store-email" placeholder="contact@boutique.com">
-            </div>
-            <div class="form-group">
-                <label>Catégorie principale de produits</label>
-                <select id="store-category" required>
-                    <option value="">Sélectionnez...</option>
-                    <option value="Smartphones & Tablettes">Smartphones & Tablettes</option>
-                    <option value="Accessoires (Coques, Chargeurs)">Accessoires (Coques, Chargeurs)</option>
-                    <option value="Audio (AirPods, Casques)">Audio (AirPods, Casques)</option>
-                    <option value="Informatique (PC, Clés USB)">Informatique (PC, Clés USB)</option>
-                    <option value="Électronique diverse">Électronique diverse</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Choisissez un mot de passe (pour votre futur dashboard)</label>
-                <input type="password" id="store-pwd" required placeholder="Mot de passe sécurisé">
-            </div>
-            <button type="submit" class="btn-submit">Soumettre ma candidature</button>
-            <div id="form-msg" style="text-align: center; margin-top: 1rem; color: #10b981; font-weight: 500;"></div>
-        </form>
-    </div>
-
+    <!-- Avantages -->
     <section class="benefits-grid">
         <div class="benefit-card">
-            <div class="benefit-icon">🚀</div>
+            <span class="benefit-icon">🚀</span>
             <h3>Visibilité Maximale</h3>
-            <p style="color: var(--text-muted); font-size: 0.95rem;">Profitez de notre trafic quotidien. Vos produits accèdent directement à des milliers de clients ciblés.</p>
+            <p>Vos produits accèdent directement à des milliers de clients tech ciblés partout en Guinée.</p>
         </div>
         <div class="benefit-card">
-            <div class="benefit-icon">🚚</div>
+            <span class="benefit-icon">🚚</span>
             <h3>Livraison Gérée</h3>
-            <p style="color: var(--text-muted); font-size: 0.95rem;">Ne vous souciez plus des expéditions. Notre module de livraison se charge d'acheminer vos produits au client !</p>
+            <p>Notre réseau de livraison à Conakry et en province s'occupe d'acheminer vos produits.</p>
         </div>
         <div class="benefit-card">
-            <div class="benefit-icon">💎</div>
-            <h3>Image Premium</h3>
-            <p style="color: var(--text-muted); font-size: 0.95rem;">Vendez vos articles dans un écrin esthétique de très haute qualité qui rassure et convertit mieux les acheteurs.</p>
+            <span class="benefit-icon">📊</span>
+            <h3>Dashboard Vendeur</h3>
+            <p>Gérez vos produits, suivez vos commandes et analysez vos ventes en temps réel.</p>
+        </div>
+        <div class="benefit-card">
+            <span class="benefit-icon">💰</span>
+            <h3>Revenus Garantis</h3>
+            <p>Commission transparente de 10% seulement. Gardez l'essentiel de vos revenus.</p>
         </div>
     </section>
 
-    <footer style="text-align: center; padding: 2rem; border-top: 1px solid var(--border); margin-top: 4rem; color: var(--text-muted);">
-        <p>&copy; 2026 Diallo Digital Marketplace. Tous droits réservés.</p>
+    <!-- Étapes -->
+    <div class="steps-row">
+        <div class="step"><div class="step-num">1</div><div class="step-label">Candidature</div></div>
+        <div class="step-line"></div>
+        <div class="step"><div class="step-num">2</div><div class="step-label">Validation Admin</div></div>
+        <div class="step-line"></div>
+        <div class="step"><div class="step-num">3</div><div class="step-label">Accès Dashboard</div></div>
+        <div class="step-line"></div>
+        <div class="step"><div class="step-num">4</div><div class="step-label">Publiez & Vendez</div></div>
+    </div>
+
+    <!-- Formulaire -->
+    <section class="form-section">
+        <h2>Soumettre ma candidature</h2>
+        <p class="sub">Remplissez le formulaire ci-dessous. Notre équipe vous contactera sous 24h.</p>
+        <div class="form-card">
+            <form id="seller-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nom de la Boutique</label>
+                        <input type="text" id="store-name" required placeholder="Ex: TechShop GN">
+                    </div>
+                    <div class="form-group">
+                        <label>Nom du Gérant</label>
+                        <input type="text" id="owner-name" required placeholder="Votre nom complet">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Téléphone (WhatsApp)</label>
+                        <input type="tel" id="store-phone" required placeholder="620 00 00 00">
+                    </div>
+                    <div class="form-group">
+                        <label>Email (optionnel)</label>
+                        <input type="email" id="store-email" placeholder="contact@boutique.com">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Catégorie principale</label>
+                    <select id="store-category" required>
+                        <option value="">Sélectionnez...</option>
+                        <option value="Audio (AirPods, Casques)">Audio (AirPods, Casques)</option>
+                        <option value="Smartphones & Tablettes">Smartphones & Tablettes</option>
+                        <option value="Accessoires (Coques, Chargeurs)">Accessoires (Coques, Chargeurs)</option>
+                        <option value="Informatique (PC, Clés USB)">Informatique (PC, Clés USB)</option>
+                        <option value="Électronique diverse">Électronique diverse</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Mot de passe (pour votre dashboard)</label>
+                    <input type="password" id="store-pwd" required placeholder="Choisissez un mot de passe sécurisé">
+                </div>
+                <button type="submit" class="btn-submit">🚀 Soumettre ma candidature</button>
+                <div id="form-msg"></div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer style="background:var(--bg-surface);border-top:1px solid var(--border);padding:2rem;text-align:center;">
+        <p style="color:var(--text-muted);font-size:0.85rem;">© 2026 <strong style="color:var(--text-secondary);">DIALLO DIGITAL</strong> — Tous droits réservés &nbsp;|&nbsp; <a href="index.html" style="color:var(--accent);">Boutique</a></p>
     </footer>
 
     <script>
         document.getElementById('seller-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.querySelector('.btn-submit');
-            btn.textContent = 'Envoi en cours...';
-            btn.disabled = true;
-
-            const payload = {
-                store_name: document.getElementById('store-name').value,
-                owner_name: document.getElementById('owner-name').value,
-                phone: document.getElementById('store-phone').value,
-                email: document.getElementById('store-email').value,
-                category: document.getElementById('store-category').value,
-                password: document.getElementById('store-pwd').value
-            };
-
+            btn.textContent = '⏳ Envoi en cours...'; btn.disabled = true;
+            const msgEl = document.getElementById('form-msg');
             try {
-                const res = await fetch('/api/sellers/apply', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
+                const res = await fetch('/api/sellers/apply', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ store_name: document.getElementById('store-name').value, owner_name: document.getElementById('owner-name').value, phone: document.getElementById('store-phone').value, email: document.getElementById('store-email').value, category: document.getElementById('store-category').value, password: document.getElementById('store-pwd').value }) });
                 const result = await res.json();
-                const msgEl = document.getElementById('form-msg');
-
                 if (res.ok) {
-                    msgEl.style.color = '#10b981';
-                    msgEl.textContent = result.message;
+                    msgEl.style.cssText = 'display:block;padding:0.8rem;border-radius:8px;background:rgba(48,209,88,0.1);border:1px solid rgba(48,209,88,0.3);color:#30d158;font-weight:600;text-align:center;';
+                    msgEl.textContent = '✅ ' + result.message;
                     document.getElementById('seller-form').reset();
                 } else {
-                    msgEl.style.color = '#ef4444';
-                    msgEl.textContent = result.error || 'Erreur lors de la soumission.';
+                    msgEl.style.cssText = 'display:block;padding:0.8rem;border-radius:8px;background:rgba(255,69,58,0.1);border:1px solid rgba(255,69,58,0.3);color:#ff453a;font-weight:600;text-align:center;';
+                    msgEl.textContent = '❌ ' + (result.error || 'Erreur.');
                 }
-            } catch (err) {
-                alert("Erreur de connexion au serveur.");
-            } finally {
-                btn.textContent = 'Soumettre ma candidature';
-                btn.disabled = false;
-            }
+            } catch { msgEl.textContent = '❌ Erreur serveur.'; }
+            finally { btn.textContent = '🚀 Soumettre ma candidature'; btn.disabled = false; }
         });
     </script>
 </body>

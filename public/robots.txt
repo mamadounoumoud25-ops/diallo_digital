@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Allow: /index.html
+Allow: /produit.html
+Disallow: /admin.html
+Disallow: /admin.js
+Disallow: /admin.css
+Disallow: /mon-compte.html
+Disallow: /vendeur-dashboard.html
+
+Sitemap: https://diallo-digital.onrender.com/sitemap.xml

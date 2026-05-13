@@ -6,42 +6,359 @@
     <title>Chargement... | Diallo Digital</title>
 
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Découvrez les détails de ce produit High-Tech chez Diallo Digital. Les meilleurs accessoires audio et tech à Conakry, Guinée.">
-    <meta name="keywords" content="Produits Tech, AirPods Guinée, Casques, Microphones, Guinée, Diallo Digital">
-    
-    <!-- Open Graph (WhatsApp, Facebook Sharing) -->
+    <meta name="description" content="Découvrez les détails de ce produit High-Tech chez Diallo Digital. Les meilleurs AirPods et accessoires audio à Conakry, Guinée.">
+    <meta name="keywords" content="AirPods Guinée, Casques, Microphones, Diallo Digital, Tech Conakry">
+
+    <!-- Open Graph -->
     <meta property="og:type" content="product">
-    <meta property="og:title" content="Produit High-Tech | Diallo Digital Guinée">
-    <meta property="og:description" content="Achetez avec paiement Mobile Money et livraison rapide à Conakry.">
+    <meta property="og:title" content="Produit | Diallo Digital Guinée">
+    <meta property="og:description" content="Achetez avec Mobile Money et livraison rapide à Conakry.">
     <meta property="og:image" content="https://diallo-digital.onrender.com/img/logo.png">
-    
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* Styles spécifiques à produit.html */
+        .product-detail-main {
+            padding: 3rem 0 6rem;
+            min-height: 60vh;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 2.5rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        .breadcrumb a { color: var(--text-secondary); transition: color var(--t-fast); }
+        .breadcrumb a:hover { color: var(--accent); }
+        .breadcrumb span { color: var(--text-muted); }
+
+        /* Product Detail Layout */
+        .product-detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+            margin-bottom: 4rem;
+        }
+
+        /* Left: Image + Vidéo */
+        .product-media {
+            position: sticky;
+            top: 100px;
+        }
+
+        .product-image-main {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            aspect-ratio: 1;
+            overflow: hidden;
+            padding: 2rem;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .product-image-main::before {
+            content: '';
+            position: absolute;
+            width: 60%;
+            height: 60%;
+            background: radial-gradient(circle, rgba(108,99,255,0.12) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .product-image-main img {
+            width: 85%;
+            height: 85%;
+            object-fit: contain;
+            filter: drop-shadow(0 15px 40px rgba(0,0,0,0.5));
+            transition: transform 0.6s cubic-bezier(0.25,1,0.5,1);
+            position: relative;
+            z-index: 2;
+        }
+
+        .product-image-main:hover img {
+            transform: scale(1.06) translateY(-5px);
+        }
+
+        /* Video Section */
+        .product-video-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            aspect-ratio: 16/9;
+            margin-top: 1rem;
+            display: none; /* Caché par défaut, affiché si video_url existe */
+        }
+
+        .product-video-container.has-video { display: block; }
+
+        .product-video-container iframe,
+        .product-video-container video {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Right: Info */
+        .product-info-panel { padding: 0.5rem 0; }
+
+        .product-info-panel .product-category {
+            font-size: 0.75rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            display: block;
+            margin-bottom: 0.8rem;
+        }
+
+        .product-info-panel h1 {
+            font-size: 2.2rem;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            font-family: 'Outfit', sans-serif;
+            line-height: 1.2;
+        }
+
+        .seller-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: var(--glass-bg);
+            border: 1px solid var(--border);
+            padding: 0.4rem 1rem;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .product-desc {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            padding: 1.5rem 0;
+        }
+
+        .price-block { margin-bottom: 1.8rem; }
+
+        .price-val {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--accent-2), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .price-note {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.3rem;
+        }
+
+        .add-cart-detail {
+            width: 100%;
+            background: linear-gradient(135deg, var(--accent), #8b5cf6);
+            color: white;
+            border: none;
+            padding: 1.1rem 2rem;
+            border-radius: var(--radius-md);
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--t-fast);
+            font-family: 'Inter', sans-serif;
+            box-shadow: 0 8px 25px rgba(108,99,255,0.35);
+            margin-bottom: 1rem;
+            letter-spacing: 0.02em;
+        }
+
+        .add-cart-detail:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 35px rgba(108,99,255,0.55);
+        }
+
+        .add-cart-detail:active { transform: translateY(0); }
+
+        /* Garanties */
+        .guarantees-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.8rem;
+            margin: 1.5rem 0;
+        }
+
+        .guarantee-item {
+            background: var(--glass-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 0.8rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .guarantee-item .g-icon { font-size: 1.3rem; margin-bottom: 0.3rem; display: block; }
+        .guarantee-item .g-label { font-weight: 600; color: var(--text-primary); }
+
+        /* Payment Badges */
+        .payment-badges {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+
+        .payment-badges span {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .payment-badges img {
+            height: 22px;
+            opacity: 0.7;
+            filter: brightness(3);
+            transition: opacity var(--t-fast);
+        }
+
+        .payment-badges img:hover { opacity: 1; }
+
+        /* Review Form */
+        #review-form-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            margin-bottom: 2rem;
+        }
+
+        #review-form-container h3 {
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        #review-form-container input,
+        #review-form-container select,
+        #review-form-container textarea {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            background: var(--bg-elevated);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            transition: border-color var(--t-fast);
+        }
+
+        #review-form-container input:focus,
+        #review-form-container select:focus,
+        #review-form-container textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(108,99,255,0.15);
+        }
+
+        #review-form-container label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        #review-form-container textarea { min-height: 100px; resize: vertical; }
+
+        /* Footer Simple */
+        .detail-footer {
+            background: var(--bg-surface);
+            border-top: 1px solid var(--border);
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .detail-footer p {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+        }
+
+        .detail-footer a {
+            color: var(--text-secondary);
+            transition: color var(--t-fast);
+        }
+
+        .detail-footer a:hover { color: var(--accent); }
+
+        @media (max-width: 768px) {
+            .product-detail-grid {
+                grid-template-columns: 1fr !important;
+                gap: 2rem;
+            }
+            .product-media { position: static; }
+            .product-info-panel h1 { font-size: 1.7rem; }
+            .guarantees-grid { grid-template-columns: repeat(3,1fr); }
+        }
+    </style>
 </head>
 <body>
-    <header class="navbar">
-        <div class="navbar-container">
+    <!-- Top Banner -->
+    <div class="top-promo-banner">
+        <p>🎧 NOUVEAUX AIRPODS DISPONIBLES — LIVRAISON EXPRESS À CONAKRY ET EN PROVINCE !</p>
+    </div>
+
+    <!-- Header -->
+    <header class="main-header">
+        <div class="header-container">
             <div class="logo">
-                <a href="index.html">
-                    <img src="img/logo.png" alt="Diallo Digital Logo" class="logo-img">
-                    DIALLO DIGITAL<span>.</span>
+                <a href="index.html" style="display:flex;align-items:center;gap:0.75rem;">
+                    <img src="img/logo.png" alt="Diallo Digital Logo">
+                    <div style="display:flex;flex-direction:column;">
+                        <span>DIALLO DIGITAL.</span>
+                        <span style="font-size:0.55rem;color:var(--text-muted);font-weight:600;letter-spacing:0.05em;text-transform:uppercase;margin-top:2px;">Mamadou Noumou Diallo</span>
+                    </div>
                 </a>
             </div>
-            
-            <nav>
-                <ul class="nav-links">
-                    <li><a href="index.html">Boutique</a></li>
+
+            <nav class="desktop-nav">
+                <ul class="nav-menu">
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="index.html#products-container">Catalogue</a></li>
                     <li><a href="contact.html">Contact</a></li>
                 </ul>
             </nav>
 
-            <div class="cart-container" id="cart-toggle">
-                <div class="cart-icon-wrapper">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+            <div class="header-actions">
+                <a href="connexion.html" class="action-btn" title="Mon Compte">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                </a>
+                <div class="cart-btn" id="cart-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
                     <span class="cart-count">0</span>
                 </div>
             </div>
@@ -50,207 +367,154 @@
 
     <main class="product-detail-main">
         <div class="container">
-            <div id="product-detail-container">
-                <!-- Product details loaded by JS -->
-                <div class="loading-spinner">Chargement du produit...</div>
+
+            <!-- Fil d'Ariane -->
+            <div class="breadcrumb">
+                <a href="index.html">Accueil</a>
+                <span>›</span>
+                <a href="index.html#products-container">Catalogue</a>
+                <span>›</span>
+                <span id="breadcrumb-name">Produit</span>
             </div>
 
-            <!-- Section Avis Clients -->
+            <!-- Contenu Produit -->
+            <div id="product-detail-container">
+                <div class="loading-spinner">⏳ Chargement du produit...</div>
+            </div>
+
+            <!-- Section Avis -->
             <section class="reviews-section">
                 <div class="section-header">
                     <h2>Avis des Clients</h2>
-                    <button class="btn-primary" id="btn-open-review-form">Laisser un avis</button>
+                    <button class="btn-primary" id="btn-open-review-form" style="padding:0.75rem 1.5rem;font-size:0.88rem;">✍️ Laisser un avis</button>
                 </div>
-                
-                <div id="review-form-container" style="display: none; margin-bottom: 2rem; background: var(--bg-card); padding: 2rem; border-radius: var(--radius-lg); border: 1px solid var(--border);">
-                    <h3 style="margin-bottom: 1.5rem;">Votre expérience avec ce produit</h3>
+
+                <div id="review-form-container" style="display:none;">
+                    <h3>Votre expérience</h3>
                     <form id="submit-review-form">
-                        <div class="form-group-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
-                            <div class="form-group">
-                                <label style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem;">Votre nom</label>
-                                <input type="text" id="rev-name" required placeholder="Ex: Mamadou D." style="width: 100%; padding: 0.8rem; background: var(--bg-dark); border: 1px solid var(--border); border-radius: var(--radius-sm); color: white;">
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;">
+                            <div>
+                                <label>Votre nom</label>
+                                <input type="text" id="rev-name" required placeholder="Ex: Mamadou D.">
                             </div>
-                            <div class="form-group">
-                                <label style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem;">Note</label>
-                                <select id="rev-rating" required style="width: 100%; padding: 0.8rem; background: var(--bg-dark); border: 1px solid var(--border); border-radius: var(--radius-sm); color: white; font-family: inherit;">
-                                    <option value="5">⭐⭐⭐⭐⭐ (Excellent)</option>
-                                    <option value="4">⭐⭐⭐⭐ (Très bien)</option>
-                                    <option value="3">⭐⭐⭐ (Moyen)</option>
-                                    <option value="2">⭐⭐ (Décevant)</option>
-                                    <option value="1">⭐ (À éviter)</option>
+                            <div>
+                                <label>Note</label>
+                                <select id="rev-rating" required>
+                                    <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
+                                    <option value="4">⭐⭐⭐⭐ Très bien</option>
+                                    <option value="3">⭐⭐⭐ Moyen</option>
+                                    <option value="2">⭐⭐ Décevant</option>
+                                    <option value="1">⭐ À éviter</option>
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group" style="margin-bottom: 1.5rem;">
-                            <label style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem;">Votre commentaire</label>
-                            <textarea id="rev-comment" required placeholder="Qu'avez-vous pensé de la qualité, du son, etc. ?" style="width: 100%; padding: 0.8rem; min-height: 100px; background: var(--bg-dark); border: 1px solid var(--border); border-radius: var(--radius-sm); color: white;"></textarea>
+                        <div style="margin-bottom:1.5rem;">
+                            <label>Commentaire</label>
+                            <textarea id="rev-comment" required placeholder="Qu'avez-vous pensé du produit ?"></textarea>
                         </div>
-                        <div style="display: flex; gap: 1rem;">
-                            <button type="submit" class="btn-primary">Publier l'avis</button>
-                            <button type="button" class="btn-secondary" id="btn-cancel-review">Annuler</button>
+                        <div style="display:flex;gap:1rem;">
+                            <button type="submit" class="btn-primary" style="padding:0.85rem 1.8rem;">Publier</button>
+                            <button type="button" class="btn-secondary" id="btn-cancel-review" style="padding:0.85rem 1.5rem;">Annuler</button>
                         </div>
                     </form>
                 </div>
 
                 <div id="reviews-list" class="reviews-grid">
-                    <p class="text-muted">Chargement des avis...</p>
+                    <p style="color:var(--text-muted)">Chargement des avis...</p>
                 </div>
             </section>
 
-            <!-- Section Produits Similaires -->
+            <!-- Produits Similaires -->
             <section class="related-products-section">
                 <div class="section-header">
                     <h2>Produits Similaires</h2>
                 </div>
-                <div id="related-products-container" class="products-grid">
-                    <!-- Suggestion injectées par JS -->
-                </div>
+                <div id="related-products-container" class="products-grid"></div>
             </section>
         </div>
     </main>
 
-    <!-- Cart Overlay (Slide-over) - Same as index.html -->
+    <!-- Cart Overlay -->
     <div class="cart-overlay" id="cart-overlay">
         <div class="cart-panel">
             <div class="cart-header">
                 <h3>Votre Panier</h3>
-                <button class="close-cart" id="close-cart">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                </button>
+                <button class="close-cart" id="close-cart">&times;</button>
             </div>
             <div class="cart-items" id="cart-items-container">
                 <div class="empty-cart">Votre panier est vide</div>
             </div>
-            <div class="cart-footer" id="cart-footer" style="display: none;">
-                <div class="checkout-form" style="margin-bottom: 1.5rem; text-align: left;">
-                    <h4 style="margin-bottom: 0.8rem; font-size: 1rem;">Vos coordonnées</h4>
-                    <input type="text" id="checkout-name" placeholder="Votre nom complet" required style="width: 100%; padding: 0.8rem; margin-bottom: 0.8rem; border: 1px solid var(--border); border-radius: var(--radius-md);">
-                    <input type="tel" id="checkout-phone" placeholder="Numéro de téléphone (Orange/MTN)" required style="width: 100%; padding: 0.8rem; margin-bottom: 0.8rem; border: 1px solid var(--border); border-radius: var(--radius-md);">
-                    <select id="checkout-zone" style="width: 100%; padding: 0.8rem; margin-bottom: 0.8rem; border: 1px solid var(--border); border-radius: var(--radius-md); font-family: inherit;">
-                        <option value="0" data-name="">Sélectionnez votre zone de livraison...</option>
-                        <!-- Injecté par JS -->
+            <div class="cart-footer" id="cart-footer" style="display:none;">
+                <div class="checkout-form" style="margin-bottom:1.5rem;text-align:left;">
+                    <h4 style="margin-bottom:0.8rem;font-size:1rem;color:var(--text-primary);">Vos coordonnées</h4>
+                    <input type="text" id="checkout-name" placeholder="Votre nom complet" required style="width:100%;padding:0.8rem;margin-bottom:0.8rem;border:1px solid var(--border);border-radius:var(--radius-md);background:var(--bg-elevated);color:var(--text-primary);">
+                    <input type="tel" id="checkout-phone" placeholder="Numéro de téléphone" required style="width:100%;padding:0.8rem;margin-bottom:0.8rem;border:1px solid var(--border);border-radius:var(--radius-md);background:var(--bg-elevated);color:var(--text-primary);">
+                    <select id="checkout-zone" style="width:100%;padding:0.8rem;margin-bottom:0.8rem;border:1px solid var(--border);border-radius:var(--radius-md);font-family:inherit;background:var(--bg-elevated);color:var(--text-primary);">
+                        <option value="0">Sélectionnez votre zone...</option>
                     </select>
-                    <input type="text" id="checkout-address" placeholder="Adresse précise (Quartier, Point de repère)" required style="width: 100%; padding: 0.8rem; margin-bottom: 0.8rem; border: 1px solid var(--border); border-radius: var(--radius-md);">
+                    <input type="text" id="checkout-address" placeholder="Adresse précise" required style="width:100%;padding:0.8rem;margin-bottom:0.8rem;border:1px solid var(--border);border-radius:var(--radius-md);background:var(--bg-elevated);color:var(--text-primary);">
+
+                    <h4 style="margin-bottom:0.8rem;font-size:1rem;margin-top:1rem;color:var(--text-primary);">Moyen de paiement</h4>
+                    <select id="checkout-payment-method" style="width:100%;padding:0.8rem;margin-bottom:0.8rem;border:1px solid var(--border);border-radius:var(--radius-md);font-family:inherit;font-weight:600;background:var(--bg-elevated);color:var(--text-primary);">
+                        <option value="WhatsApp / Livraison">Payer à la livraison / WhatsApp</option>
+                        <option value="Orange Money">Orange Money (Direct)</option>
+                        <option value="MTN Mobile Money">MTN Mobile Money (Direct)</option>
+                    </select>
+
+                    <div id="momo-instructions" style="display:none;background:var(--bg-elevated);border:1px solid rgba(108,99,255,0.3);padding:1rem;border-radius:var(--radius-md);margin-bottom:0.8rem;">
+                        <p id="momo-text" style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:0.5rem;"></p>
+                        <input type="text" id="checkout-payment-ref" placeholder="ID de Transaction" style="width:100%;padding:0.6rem;border:1px solid var(--border);border-radius:4px;font-size:0.85rem;background:var(--bg-card);color:var(--text-primary);">
+                    </div>
                 </div>
-                <div class="cart-total" style="border-top: 1px dashed var(--border); padding-top: 1rem; margin-bottom: 0.5rem; font-size: 1rem; color: var(--secondary);">
-                    <span>Sous-total</span>
-                    <span id="cart-subtotal-price">0 GNF</span>
+                <div class="cart-total" style="border-top:1px dashed var(--border);padding-top:1rem;margin-bottom:0.5rem;font-size:0.95rem;">
+                    <span>Sous-total</span><span id="cart-subtotal-price">0 GNF</span>
                 </div>
-                <div class="cart-total" style="margin-bottom: 1rem; font-size: 1rem; color: var(--secondary);">
-                    <span>Frais de livraison</span>
-                    <span id="cart-shipping-price">0 GNF</span>
+                <div class="cart-total" style="margin-bottom:1rem;font-size:0.95rem;">
+                    <span>Livraison</span><span id="cart-delivery-price">0 GNF</span>
                 </div>
-                <div class="cart-total" style="margin-bottom: 1.5rem; font-size: 1.3rem; font-weight: 700; color: var(--primary);">
-                    <span>Total</span>
-                    <span id="cart-total-price">0 GNF</span>
+                <div class="cart-total">
+                    <span>Total</span><span id="cart-total-price">0 GNF</span>
                 </div>
-                <button class="checkout-btn">Confirmer ma commande WhatsApp</button>
+                <button class="checkout-btn">Confirmer la commande</button>
             </div>
         </div>
     </div>
 
-    <!-- Checkout Modal -->
-    <div class="modal-overlay" id="checkout-modal">
-        <div class="checkout-panel">
-            <div class="checkout-header">
-                <h3>Finaliser votre commande</h3>
-                <button class="close-checkout" id="close-checkout-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                </button>
-            </div>
-            
-            <div class="checkout-body">
-                <form id="checkout-form">
-                    <div class="form-section">
-                        <h4>1. Vos Informations</h4>
-                        <div class="input-group">
-                            <label>Nom complet</label>
-                            <input type="text" id="chk-name" required placeholder="Ex: Jean Dupont">
-                        </div>
-                        <div class="input-group">
-                            <label>Adresse de livraison</label>
-                            <textarea id="chk-address" required placeholder="Votre adresse complète..."></textarea>
-                        </div>
-                    </div>
-                    
-                    <div class="form-section">
-                        <h4>2. Méthode de Paiement</h4>
-                        <div class="payment-methods">
-                            <label class="payment-method">
-                                <input type="radio" name="payment" value="Orange Money" checked>
-                                <span class="method-box method-orange">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c8/Orange_logo.svg" width="24" height="24" style="margin-bottom:5px;">
-                                    Orange Money
-                                </span>
-                            </label>
-                            <label class="payment-method">
-                                <input type="radio" name="payment" value="MTN Money">
-                                <span class="method-box method-mtn">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="#ffcc00"><rect x="2" y="2" width="20" height="20" rx="4" ry="4"></rect><text x="5" y="15" fill="#000" style="font-size:10px; font-weight:bold;">MTN</text></svg>
-                                    MTN Money
-                                </span>
-                            </label>
-                            <label class="payment-method">
-                                <input type="radio" name="payment" value="Livraison">
-                                <span class="method-box">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l2-1.14"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
-                                    À la Livraison
-                                </span>
-                            </label>
-                        </div>
-                        
-                        <div id="momo-instructions" class="checkout-instructions" style="display:block;">
-                            <p>Veuillez effectuer le dépôt sur le numéro suivant :</p>
-                            <p><strong>611 76 00 45</strong></p>
-                            <p style="font-size:0.8rem; margin-top:0.5rem;">Après validation, vous serez redirigé vers WhatsApp pour nous envoyer la capture du dépôt.</p>
-                        </div>
-                    </div>
-
-                    <div class="checkout-footer">
-                        <div class="checkout-total">Total à payer : <strong id="checkout-total-price">0 GNF</strong></div>
-                        <button type="submit" class="submit-checkout-btn" id="submit-order-btn">Payer et Valider</button>
-                    </div>
-                </form>
-                
-                <div id="checkout-loading" style="display:none; text-align:center; padding: 3rem 0;">
-                    <div class="spinner"></div>
-                    <p style="margin-top:1rem; color:var(--primary); font-weight:500;">Traitement de votre commande...</p>
-                </div>
-                
-                <div id="checkout-success" style="display:none; text-align:center; padding: 2rem 0;">
-                    <div style="color:#10b981; margin-bottom:1rem;">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-                    </div>
-                    <h3 style="font-size:1.5rem; margin-bottom:0.5rem; color:var(--primary);">Commande enregistrée !</h3>
-                    <p style="color:var(--secondary); margin-bottom:1.5rem;">Merci. Votre commande n°<strong id="success-order-id"></strong> a été validée.</p>
-                    <button class="btn-return-shop" id="return-shop-btn">Retour à la boutique</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <footer>
-        <div class="footer-content">
-            <div class="footer-brand">
-                <div class="footer-logo" style="margin-bottom: 1rem;">
-                    <img src="img/logo.png" alt="Logo" style="height: 40px; filter: brightness(0) invert(1);">
-                </div>
-                <h2>DIALLO DIGITAL<span>.</span></h2>
-                <p>L'excellence numérique à Conakry.</p>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2026 DIALLO DIGITAL. Tous droits réservés.</p>
-            <p style="margin-top: 10px;"><a href="admin.html" style="opacity:0.5; font-size:0.8rem; text-decoration:none; color:inherit;">Accès Administration</a></p>
-        </div>
-    </footer>
-
-    <!-- WhatsApp Floating Button -->
+    <!-- WhatsApp Floating -->
     <a href="https://wa.me/224611760045" class="whatsapp-float" target="_blank">
-        <span class="whatsapp-tooltip">Contacter le propriétaire</span>
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-circle"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 1 1-7.6-4.7 8.38 8.38 0 0 1 3.8.9L21 11.5z"></path></svg>
+        <span class="whatsapp-tooltip">Discuter sur WhatsApp</span>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="30" height="30">
+            <path fill="#ffffff" d="M16 0C7.164 0 0 7.164 0 16c0 2.813.74 5.586 2.15 8.03L0 32l8.194-2.1A15.98 15.98 0 0 0 16 32C24.836 32 32 24.836 32 16S24.836 0 16 0zm0 29.268a13.26 13.26 0 0 1-6.77-1.854l-.487-.29-5.04 1.29 1.32-4.908-.32-.508A13.227 13.227 0 0 1 2.68 16C2.68 8.692 8.7 2.732 16 2.732c3.542 0 6.869 1.38 9.37 3.884a13.196 13.196 0 0 1 3.878 9.39c0 7.308-5.944 13.262-13.248 13.262zm7.27-9.93c-.398-.2-2.356-1.163-2.72-1.295-.366-.134-.632-.2-.898.2-.266.398-1.03 1.294-1.264 1.56-.232.267-.465.3-.864.1-.398-.2-1.682-.62-3.204-1.978a12.01 12.01 0 0 1-2.218-2.762c-.232-.398-.025-.614.175-.812.18-.18.398-.465.598-.698.2-.233.267-.4.4-.664.134-.267.067-.5-.033-.7-.1-.2-.9-2.162-1.23-2.96-.325-.778-.658-.673-.898-.685l-.765-.013c-.266 0-.698.1-1.063.5-.366.398-1.397 1.363-1.397 3.326 0 1.962 1.43 3.858 1.63 4.124.2.267 2.81 4.29 6.812 6.018.952.41 1.695.655 2.274.84.955.304 1.824.26 2.511.158.766-.113 2.356-.963 2.688-1.893.332-.93.332-1.727.232-1.894-.098-.165-.364-.264-.763-.463z"/>
+        </svg>
     </a>
 
+    <!-- Footer Simple -->
+    <footer class="detail-footer">
+        <p>© 2026 <strong>DIALLO DIGITAL</strong> — Tous droits réservés &nbsp;|&nbsp;
+           <a href="index.html">Boutique</a> &nbsp;|&nbsp;
+           <a href="contact.html">Contact</a> &nbsp;|&nbsp;
+           <a href="admin.html" style="opacity:0.4;">Admin</a>
+        </p>
+    </footer>
+
     <script src="app.js"></script>
+    <script>
+        // Mise à jour du breadcrumb dynamiquement
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const productId = params.get('id');
+            if (productId) {
+                fetch(`/api/products/${productId}`)
+                    .then(r => r.json())
+                    .then(result => {
+                        if (result.message === 'success') {
+                            const el = document.getElementById('breadcrumb-name');
+                            if (el) el.textContent = result.data.name;
+                        }
+                    })
+                    .catch(() => {});
+            }
+        });
+    </script>
 </body>
 </html>

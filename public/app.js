@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupCartUI();
     setupNewsletter();
     setupSearchUI();
+    setupMobileMenu();
 });
 
 let allProducts = [];
@@ -108,31 +109,116 @@ async function fetchProductDetail(id) {
         if (result.message === 'success') {
             const product = result.data;
             
-            // Dynamic SEO Update
-            document.title = `${product.name} | Diallo Digital`;
+            // Dynamic SEO Enriched (Google Rich Results)
+            document.title = `${product.name} | Prix Guinée GNF | Diallo Digital`;
             const metaDescription = document.querySelector('meta[name="description"]');
             if (metaDescription) {
-                metaDescription.setAttribute('content', `${product.name} : ${product.description}`);
+                metaDescription.setAttribute('content', `Achetez ${product.name} chez Diallo Digital. ${product.description.substring(0, 150)}... Livraison rapide à Conakry et partout en Guinée.`);
+            }
+
+            // Update Open Graph for WhatsApp sharing
+            const ogTitle = document.querySelector('meta[property="og:title"]');
+            if (ogTitle) ogTitle.setAttribute('content', `${product.name} - Diallo Digital`);
+            const ogImg = document.querySelector('meta[property="og:image"]');
+            if (ogImg) ogImg.setAttribute('content', product.image);
+
+            // Inject Product Structured Data (JSON-LD)
+            let existingSchema = document.getElementById('product-schema');
+            if (existingSchema) existingSchema.remove();
+
+            const schema = {
+                "@context": "https://schema.org",
+                "@type": "Product",
+                "name": product.name,
+                "image": product.image,
+                "description": product.description,
+                "brand": {
+                    "@type": "Brand",
+                    "name": product.store_name || "Diallo Digital"
+                },
+                "offers": {
+                    "@type": "Offer",
+                    "url": window.location.href,
+                    "priceCurrency": "GNF",
+                    "price": product.price,
+                    "availability": product.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock"
+                }
+            };
+            const script = document.createElement('script');
+            script.id = 'product-schema';
+            script.type = 'application/ld+json';
+            script.text = JSON.stringify(schema);
+            document.head.appendChild(script);
+
+            // Conversion YouTube URL → embed
+            let videoEmbed = '';
+            if (product.video_url) {
+                let videoHtml = '';
+                const ytMatch = product.video_url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+                if (ytMatch) {
+                    videoHtml = `<iframe src="https://www.youtube.com/embed/${ytMatch[1]}" allowfullscreen title="Vidéo ${product.name}"></iframe>`;
+                } else if (product.video_url.endsWith('.mp4') || product.video_url.includes('/uploads/')) {
+                    videoHtml = `<video controls><source src="${product.video_url}" type="video/mp4"></video>`;
+                }
+                if (videoHtml) {
+                    videoEmbed = `<div class="product-video-container has-video">${videoHtml}</div>`;
+                }
             }
 
             container.innerHTML = `
                 <div class="product-detail-grid">
-                    <div class="product-detail-image">
-                        <img src="${product.image}" alt="${product.name}">
-                    </div>
-                    <div class="product-detail-info">
-                        <span class="product-category">${product.category}</span>
-                        <h1>${product.name}</h1>
-                        <p style="color: var(--primary); font-weight: 600; margin-bottom: 1rem;">
-                            Vendeur : ${product.store_name || 'Diallo Digital'}
-                        </p>
-                        <p class="product-desc">${product.description}</p>
-                        <div class="price-action">
-                            <span class="price-val">${formatCurrency(product.price)}</span>
-                            <button class="add-cart-detail" id="add-to-cart-detail">Ajouter au panier</button>
+                    <!-- Colonne Gauche : Image + Vidéo -->
+                    <div class="product-media">
+                        <div class="product-image-main">
+                            <img src="${product.image}" alt="${product.name}" onerror="this.src='https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=800'">
                         </div>
+                        ${videoEmbed}
+                    </div>
+
+                    <!-- Colonne Droite : Infos -->
+                    <div class="product-info-panel">
+                        <span class="product-category">${product.category || 'Électronique'}</span>
+                        <h1>${product.name}</h1>
+                        <div class="seller-badge">🏢 ${product.store_name || 'Diallo Digital'}</div>
+
+                        <p class="product-desc">${product.description}</p>
+
+                        <div class="price-block">
+                            <div class="price-val">${formatCurrency(product.price)}</div>
+                            <div class="price-note">TVA incluse · Livraison calculée au checkout</div>
+                        </div>
+
+                        <div class="product-actions" style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem;">
+                            <button class="add-cart-detail" id="add-to-cart-detail" style="margin-bottom:0;">
+                                🛒 Ajouter au panier
+                            </button>
+                            
+                            <a href="https://wa.me/?text=${encodeURIComponent('Hé ! Regarde ces ' + product.name + ' chez Diallo Digital : ' + window.location.href)}" 
+                               target="_blank" 
+                               class="share-whatsapp-btn" 
+                               style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; background: #25d366; color: white; padding: 1rem; border-radius: var(--radius-md); text-decoration: none; font-weight: 700; font-size: 0.9rem; transition: var(--t-fast);">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12.012 2c-5.508 0-9.988 4.48-9.988 9.988 0 1.76.46 3.412 1.264 4.852l-1.288 4.712 4.828-1.264c1.396.764 2.992 1.2 4.684 1.2 5.508 0 9.988-4.48 9.988-9.988 0-5.508-4.48-9.988-9.988-9.988zm-5.004 5.004c.164 0 .332.004.484.012.236.012.428.028.596.224.2.228.676 1.64.736 1.764.06.124.1.268.016.44-.084.172-.128.28-.256.424-.128.144-.268.32-.384.428-.128.12-.264.252-.112.512.152.26 1.348 2.228 3.016 3.712 1.108.988 2.124 1.408 2.456 1.576.332.168.528.144.728-.088.2-.232.868-1.012 1.104-1.36.056-.08.18-.148.332-.092.152.056.964.456 1.632.792.668.336 1.108.5 1.236.72.128.22.128 1.264-.32 2.528-.448 1.264-2.22 1.832-3.076 1.832-.856 0-3.648-.82-6.524-3.528C5.232 12.004 4.228 8.8 4.228 8.02c0-.78.712-1.552 1.488-2.676.776-1.124 1.292-1.34 1.292-1.34z"/></svg>
+                                Partager sur WhatsApp
+                            </a>
+                        </div>
+
+                        <div class="guarantees-grid">
+                            <div class="guarantee-item">
+                                <span class="g-icon">✅</span>
+                                <span class="g-label">Produit Authentique</span>
+                            </div>
+                            <div class="guarantee-item">
+                                <span class="g-icon">🚚</span>
+                                <span class="g-label">Livraison Rapide</span>
+                            </div>
+                            <div class="guarantee-item">
+                                <span class="g-icon">💬</span>
+                                <span class="g-label">Support WhatsApp</span>
+                            </div>
+                        </div>
+
                         <div class="payment-badges">
-                            <span>Paiement disponible par :</span>
+                            <span>Paiement :</span>
                             <img src="https://upload.wikimedia.org/wikipedia/commons/c/c8/Orange_logo.svg" alt="Orange Money">
                             <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/MTN_Logo.svg" alt="MTN Money">
                         </div>
@@ -193,7 +279,7 @@ function displayProducts(products, containerId = 'products-container') {
                 <a href="produit.html?id=${product.id}">
                     ${isPromo ? '<span class="badge-label">Promotion</span>' : ''}
                     ${isNew && !isPromo ? '<span class="badge-label badge-new">Nouveau</span>' : ''}
-                    <img src="${product.image}" alt="${product.name}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=800&auto=format&fit=crop'">
+                    <img src="${product.image}" alt="${product.name}" loading="lazy" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=800&auto=format&fit=crop'">
                 </a>
             </div>
             <div class="product-info">
@@ -774,4 +860,58 @@ function formatCurrency(amount) {
     return new Intl.NumberFormat('fr-GN').format(amount) + ' GNF';
 }
 
+// ==========================================
+// Mobile Menu Navigation
+// ==========================================
+function setupMobileMenu() {
+    if (window.innerWidth > 768) return; // Uniquement sur mobile
 
+    const headerContainer = document.querySelector('.header-container');
+    const headerActions = document.querySelector('.header-actions');
+    const existingNav = document.querySelector('.nav-menu');
+    
+    // S'il n'y a pas de menu existant sur la page, on ignore
+    if (!existingNav) return;
+
+    // Création du bouton Hamburger
+    const menuBtn = document.createElement('button');
+    menuBtn.className = 'mobile-menu-btn';
+    menuBtn.innerHTML = '<span></span><span></span><span></span>';
+    
+    // Placement du bouton
+    if (headerActions) {
+        // L'insérer au début des actions
+        headerActions.insertBefore(menuBtn, headerActions.firstChild);
+    } else if (headerContainer) {
+        headerContainer.appendChild(menuBtn);
+    } else {
+        return;
+    }
+
+    // Création de l'overlay avec les liens copiés
+    const overlay = document.createElement('div');
+    overlay.className = 'mobile-menu-overlay';
+    
+    const ul = document.createElement('ul');
+    ul.innerHTML = existingNav.innerHTML;
+    
+    overlay.appendChild(ul);
+    document.body.appendChild(overlay);
+
+    // Fonctionnalité d'ouverture/fermeture
+    menuBtn.addEventListener('click', () => {
+        menuBtn.classList.toggle('active');
+        overlay.classList.toggle('active');
+        document.body.style.overflow = overlay.classList.contains('active') ? 'hidden' : '';
+    });
+
+    // Fermer le menu au clic sur un lien
+    const links = overlay.querySelectorAll('a');
+    links.forEach(link => {
+        link.addEventListener('click', () => {
+            menuBtn.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+    });
+}

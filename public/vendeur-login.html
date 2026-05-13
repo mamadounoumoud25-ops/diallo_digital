@@ -6,137 +6,74 @@
     <title>Connexion Vendeur - Diallo Digital</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <style>
-        .login-page {
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: radial-gradient(circle at top right, #1e293b, #0f172a);
-        }
-        .login-card {
-            width: 100%;
-            max-width: 400px;
-            padding: 3rem;
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-        }
-        .login-header {
-            text-align: center;
-            margin-bottom: 2.5rem;
-        }
-        .login-header h1 {
-            font-family: 'Outfit', sans-serif;
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
-            color: white;
-        }
-        .login-header p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: var(--text);
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-        .form-group input {
-            width: 100%;
-            padding: 0.8rem 1rem;
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            color: white;
-            font-size: 1rem;
-        }
-        .btn-login {
-            width: 100%;
-            padding: 1rem;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: var(--radius-md);
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        .btn-login:hover {
-            background: var(--primary-light);
-            transform: translateY(-2px);
-        }
-        .error-msg {
-            color: #ef4444;
-            font-size: 0.85rem;
-            text-align: center;
-            margin-top: 1rem;
-            min-height: 1.2rem;
-        }
+        body { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 1rem; position: relative; overflow: hidden; }
+        body::before { content: ''; position: absolute; width: 500px; height: 500px; background: radial-gradient(circle, rgba(108,99,255,0.12) 0%, transparent 70%); top: -150px; left: -100px; border-radius: 50%; pointer-events: none; }
+        body::after { content: ''; position: absolute; width: 400px; height: 400px; background: radial-gradient(circle, rgba(0,212,255,0.08) 0%, transparent 70%); bottom: -100px; right: -100px; border-radius: 50%; pointer-events: none; }
+        .login-card { width: 100%; max-width: 420px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 2.5rem; box-shadow: 0 30px 80px rgba(0,0,0,0.5); position: relative; z-index: 2; animation: fadeInUp 0.5s ease-out; }
+        .login-header { text-align: center; margin-bottom: 2rem; }
+        .login-logo { font-family: 'Outfit', sans-serif; font-weight: 900; font-size: 1.5rem; background: linear-gradient(135deg, #fff, var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .login-badge { display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.25); padding: 0.35rem 1rem; border-radius: 999px; font-size: 0.75rem; font-weight: 700; color: var(--accent-2); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 0.8rem; }
+        .form-group { margin-bottom: 1.2rem; }
+        .form-group label { display: block; margin-bottom: 0.45rem; font-size: 0.78rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
+        .form-group input { width: 100%; padding: 0.9rem 1rem; background: var(--bg-elevated); border: 1.5px solid var(--border); border-radius: var(--radius-md); color: var(--text-primary); font-family: 'Inter', sans-serif; font-size: 0.95rem; transition: border-color var(--t-fast); }
+        .form-group input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(108,99,255,0.15); }
+        .form-group input::placeholder { color: var(--text-muted); }
+        .btn-login { width: 100%; padding: 1rem; background: linear-gradient(135deg, var(--accent), #8b5cf6); color: white; border: none; border-radius: var(--radius-md); font-weight: 700; font-size: 1rem; cursor: pointer; font-family: 'Inter', sans-serif; margin-top: 0.5rem; box-shadow: 0 8px 25px rgba(108,99,255,0.35); transition: var(--t-fast); }
+        .btn-login:hover { transform: translateY(-2px); box-shadow: 0 14px 35px rgba(108,99,255,0.5); }
+        .error-msg { display: none; margin-top: 1rem; padding: 0.75rem; background: rgba(255,69,58,0.1); border: 1px solid rgba(255,69,58,0.3); border-radius: var(--radius-sm); color: var(--danger); font-size: 0.85rem; font-weight: 600; text-align: center; }
+        .links { margin-top: 1.5rem; text-align: center; display: flex; flex-direction: column; gap: 0.6rem; }
+        .links a { font-size: 0.85rem; color: var(--text-muted); transition: color var(--t-fast); }
+        .links a:hover { color: var(--accent); }
+        .links a.highlight { color: var(--accent-2); font-weight: 600; }
     </style>
 </head>
-<body class="dark-theme">
-    <div class="login-page">
-        <div class="login-card">
-            <div class="login-header">
-                <h1>Espace Vendeur</h1>
-                <p>Gérez votre boutique et vos ventes</p>
+<body>
+    <div class="login-card">
+        <div class="login-header">
+            <div class="login-logo">DIALLO DIGITAL.</div>
+            <div class="login-badge">🏪 Espace Vendeur</div>
+            <p style="color:var(--text-muted);font-size:0.85rem;margin-top:0.8rem;">Gérez votre boutique et vos ventes</p>
+        </div>
+
+        <form id="seller-login-form">
+            <div class="form-group">
+                <label>Numéro de téléphone</label>
+                <input type="tel" id="login-phone" placeholder="Ex: 620 00 00 00" required>
             </div>
-            <form id="seller-login-form">
-                <div class="form-group">
-                    <label>Numéro de téléphone</label>
-                    <input type="tel" id="login-phone" placeholder="6XX XX XX XX" required>
-                </div>
-                <div class="form-group">
-                    <label>Mot de passe</label>
-                    <input type="password" id="login-pwd" placeholder="••••••••" required>
-                </div>
-                <button type="submit" class="btn-login">Se connecter</button>
-                <div id="error-msg" class="error-msg"></div>
-            </form>
-            <div style="text-align: center; margin-top: 2rem;">
-                <a href="devenir-vendeur.html" style="color: var(--primary); text-decoration: none; font-size: 0.9rem;">Pas encore partenaire ? Postulez ici</a>
+            <div class="form-group">
+                <label>Mot de passe</label>
+                <input type="password" id="login-pwd" placeholder="••••••••" required>
             </div>
+            <button type="submit" class="btn-login" id="btn-submit">🔐 Accéder à mon Dashboard</button>
+        </form>
+
+        <div class="error-msg" id="error-msg"></div>
+
+        <div class="links">
+            <a href="devenir-vendeur.html" class="highlight">Pas encore partenaire ? Postulez ici →</a>
+            <a href="index.html">← Retour à la boutique</a>
         </div>
     </div>
 
     <script>
         document.getElementById('seller-login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const phone = document.getElementById('login-phone').value;
-            const password = document.getElementById('login-pwd').value;
-            const errorEl = document.getElementById('error-msg');
-            
-            errorEl.textContent = '';
-            
+            const btn = document.getElementById('btn-submit');
+            btn.textContent = '⏳ Connexion...'; btn.disabled = true;
+            const errEl = document.getElementById('error-msg');
+            errEl.style.display = 'none';
             try {
-                const res = await fetch('/api/auth/seller-login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ phone, password })
-                });
-                
+                const res = await fetch('/api/auth/seller-login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone: document.getElementById('login-phone').value, password: document.getElementById('login-pwd').value }) });
                 const data = await res.json();
-                
-                if (res.ok) {
-                    localStorage.setItem('sellerToken', data.token);
-                    localStorage.setItem('sellerInfo', JSON.stringify(data.seller));
-                    window.location.href = 'vendeur-dashboard.html';
-                } else {
-                    errorEl.textContent = data.error || 'Erreur de connexion.';
-                }
-            } catch (err) {
-                errorEl.textContent = 'Erreur serveur. Veuillez réessayer.';
-            }
+                if (res.ok) { localStorage.setItem('sellerToken', data.token); localStorage.setItem('sellerInfo', JSON.stringify(data.seller)); window.location.href = 'vendeur-dashboard.html'; }
+                else { errEl.textContent = data.error || 'Identifiants incorrects.'; errEl.style.display = 'block'; }
+            } catch { errEl.textContent = 'Erreur serveur.'; errEl.style.display = 'block'; }
+            finally { btn.textContent = '🔐 Accéder à mon Dashboard'; btn.disabled = false; }
         });
+        if (localStorage.getItem('sellerToken')) window.location.href = 'vendeur-dashboard.html';
     </script>
 </body>
 </html>
