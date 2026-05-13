@@ -298,11 +298,21 @@ app.get('/api/seller/products', verifySellerToken, (req, res) => {
     });
 });
 
-app.post('/api/seller/products', verifySellerToken, (req, res) => {
-    const { name, description, price, stock, category, image } = req.body;
+app.post('/api/seller/products', verifySellerToken, upload.single('image_file'), (req, res) => {
+    const { name, description, price, stock, category } = req.body;
+    let image_url = req.body.image;
+
+    if (req.file) {
+        image_url = '/uploads/' + req.file.filename;
+    }
+
+    if (!image_url) {
+        return res.status(400).json({ error: "Une image ou un lien est requis." });
+    }
+
     db.run(
         "INSERT INTO products (name, description, price, stock, category, image, seller_id, is_approved) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-        [name, description, price, stock, category, image, req.sellerId, 0], // is_approved = 0 by default for sellers
+        [name, description, price, stock, category, image_url, req.sellerId, 0], // is_approved = 0 par défaut pour les vendeurs
         function (err) {
             if (err) return res.status(500).json({ error: err.message });
             res.json({ message: "Produit ajouté. En attente de validation par l'admin.", id: this.lastID });
@@ -310,16 +320,28 @@ app.post('/api/seller/products', verifySellerToken, (req, res) => {
     );
 });
 
-app.put('/api/seller/products/:id', verifySellerToken, (req, res) => {
-    const { name, description, price, stock, category, image } = req.body;
-    db.run(
-        "UPDATE products SET name = ?, description = ?, price = ?, stock = ?, category = ?, image = ?, is_approved = 0 WHERE id = ? AND seller_id = ?",
-        [name, description, price, stock, category, image, req.params.id, req.sellerId],
-        function (err) {
-            if (err) return res.status(500).json({ error: err.message });
-            if (this.changes === 0) return res.status(404).json({ error: "Produit non trouvé ou non autorisé." });
-            res.json({ message: "Produit mis à jour. En attente de re-validation." });
-        }
+app.put('/api/seller/products/:id', verifySellerToken, upload.single('image_file'), (req, res) => {
+    const { name, description, price, stock, category } = req.body;
+    let image_url = req.body.image;
+
+    if (req.file) {
+        image_url = '/uploads/' + req.file.filename;
+    }
+
+    let query, params;
+    if (image_url) {
+        query = "UPDATE products SET name = ?, description = ?, price = ?, stock = ?, category = ?, image = ?, is_approved = 0 WHERE id = ? AND seller_id = ?";
+        params = [name, description, price, stock, category, image_url, req.params.id, req.sellerId];
+    } else {
+        query = "UPDATE products SET name = ?, description = ?, price = ?, stock = ?, category = ?, is_approved = 0 WHERE id = ? AND seller_id = ?";
+        params = [name, description, price, stock, category, req.params.id, req.sellerId];
+    }
+
+    db.run(query, params, function (err) {
+        if (err) return res.status(500).json({ error: err.message });
+        if (this.changes === 0) return res.status(404).json({ error: "Produit non trouvé ou non autorisé." });
+        res.json({ message: "Produit mis à jour. En attente de re-validation." });
+    }
     );
 });
 

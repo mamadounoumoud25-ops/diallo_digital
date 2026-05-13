@@ -36,11 +36,17 @@ function setupTabs() {
 }
 
 async function fetchAuth(url, options = {}) {
+    const isFormData = options.body instanceof FormData;
+    
     options.headers = {
         ...options.headers,
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
+        'Authorization': `Bearer ${token}`
     };
+    
+    if (!isFormData) {
+        options.headers['Content-Type'] = 'application/json';
+    }
+    
     return fetch(url, options);
 }
 
@@ -172,14 +178,19 @@ function closeModal() {
 document.getElementById('seller-add-product-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     const id = document.getElementById('p-id').value;
-    const payload = {
-        name: document.getElementById('p-name').value,
-        description: document.getElementById('p-desc').value,
-        price: Number(document.getElementById('p-price').value),
-        stock: Number(document.getElementById('p-stock').value),
-        category: document.getElementById('p-category').value,
-        image: document.getElementById('p-image').value
-    };
+    
+    const formData = new FormData();
+    formData.append('name', document.getElementById('p-name').value);
+    formData.append('description', document.getElementById('p-desc').value);
+    formData.append('price', document.getElementById('p-price').value);
+    formData.append('stock', document.getElementById('p-stock').value);
+    formData.append('category', document.getElementById('p-category').value);
+    formData.append('image', document.getElementById('p-image').value);
+    
+    const fileInput = document.getElementById('p-image-file');
+    if (fileInput.files.length > 0) {
+        formData.append('image_file', fileInput.files[0]);
+    }
 
     const url = id ? `/api/seller/products/${id}` : '/api/seller/products';
     const method = id ? 'PUT' : 'POST';
@@ -187,7 +198,7 @@ document.getElementById('seller-add-product-form').addEventListener('submit', as
     try {
         const res = await fetchAuth(url, {
             method: method,
-            body: JSON.stringify(payload)
+            body: formData
         });
         if (res.ok) {
             alert(id ? 'Produit mis à jour !' : 'Produit soumis ! Il apparaîtra dès que l\'admin l\'aura validé.');

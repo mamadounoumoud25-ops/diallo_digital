@@ -187,9 +187,15 @@
                     </select>
                 </div>
                 
-                <div class="form-group">
-                    <label>Lien Image (Direct URL)</label>
-                    <input type="url" id="p-image" placeholder="https://..." required>
+                <div style="display:grid; grid-template-columns:1.5fr 1fr; gap:1rem;">
+                    <div class="form-group">
+                        <label>Lien Image (Direct URL)</label>
+                        <input type="url" id="p-image" placeholder="https://...">
+                    </div>
+                    <div class="form-group">
+                        <label>Ou Uploader Photo</label>
+                        <input type="file" id="p-image-file" accept="image/*" style="padding:0.6rem; font-size:0.7rem; border:1px solid var(--dash-border); border-radius:8px; color:white;">
+                    </div>
                 </div>
                 
                 <div style="padding: 1rem; background: rgba(108, 99, 255, 0.05); border: 1px dashed var(--dash-border); border-radius: 10px; margin-bottom: 1.5rem;">
