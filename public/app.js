@@ -846,6 +846,8 @@ function renderCartItems() {
         container.appendChild(el);
     });
 
+    const zoneSelect = document.getElementById('checkout-zone');
+    let deliveryFee = 0;
     if (zoneSelect && zoneSelect.selectedIndex > 0) {
         deliveryFee = parseFloat(zoneSelect.options[zoneSelect.selectedIndex].getAttribute('data-price')) || 0;
     }
