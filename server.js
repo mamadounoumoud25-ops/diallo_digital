@@ -282,8 +282,8 @@ app.post('/api/auth/seller-login', (req, res) => {
         const passwordIsValid = bcrypt.compareSync(password, seller.password_hash);
         if (!passwordIsValid) return res.status(401).json({ error: "Mot de passe incorrect." });
 
-        const token = jwt.sign({ id: seller.id, store_name: seller.store_name }, SECRET_KEY, { expiresIn: '7d' });
-        res.json({ token, seller: { id: seller.id, store_name: seller.store_name } });
+        const token = jwt.sign({ id: seller.id, store_name: seller.store_name, owner_name: seller.owner_name }, SECRET_KEY, { expiresIn: '7d' });
+        res.json({ token, seller: { id: seller.id, store_name: seller.store_name, owner_name: seller.owner_name } });
     });
 });
 
@@ -306,6 +306,31 @@ app.post('/api/seller/products', verifySellerToken, (req, res) => {
         function (err) {
             if (err) return res.status(500).json({ error: err.message });
             res.json({ message: "Produit ajouté. En attente de validation par l'admin.", id: this.lastID });
+        }
+    );
+});
+
+app.put('/api/seller/products/:id', verifySellerToken, (req, res) => {
+    const { name, description, price, stock, category, image } = req.body;
+    db.run(
+        "UPDATE products SET name = ?, description = ?, price = ?, stock = ?, category = ?, image = ?, is_approved = 0 WHERE id = ? AND seller_id = ?",
+        [name, description, price, stock, category, image, req.params.id, req.sellerId],
+        function (err) {
+            if (err) return res.status(500).json({ error: err.message });
+            if (this.changes === 0) return res.status(404).json({ error: "Produit non trouvé ou non autorisé." });
+            res.json({ message: "Produit mis à jour. En attente de re-validation." });
+        }
+    );
+});
+
+app.delete('/api/seller/products/:id', verifySellerToken, (req, res) => {
+    db.run(
+        "DELETE FROM products WHERE id = ? AND seller_id = ?",
+        [req.params.id, req.sellerId],
+        function (err) {
+            if (err) return res.status(500).json({ error: err.message });
+            if (this.changes === 0) return res.status(404).json({ error: "Produit non trouvé ou non autorisé." });
+            res.json({ message: "Produit supprimé avec succès." });
         }
     );
 });

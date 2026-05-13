@@ -80,6 +80,10 @@
                             <div class="stat-value" id="stat-brut">0 GNF</div>
                         </div>
                         <div class="stat-card">
+                            <div class="stat-title">Volume de Ventes</div>
+                            <div class="stat-value" id="stat-count">0</div>
+                        </div>
+                        <div class="stat-card">
                             <div class="stat-title">Commission (10%) <span class="badge-commission">Auto</span></div>
                             <div class="stat-value" id="stat-commission" style="color: #f87171;">-0 GNF</div>
                         </div>
@@ -109,6 +113,7 @@
                                     <th>Prix unitaire</th>
                                     <th>En Stock</th>
                                     <th>État</th>
+                                    <th style="text-align: right;">Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="seller-products-list"></tbody>
@@ -149,6 +154,7 @@
             </div>
             
             <form id="seller-add-product-form">
+                <input type="hidden" id="p-id">
                 <div class="form-group">
                     <label>Nom de l'article</label>
                     <input type="text" id="p-name" placeholder="Ex: AirPods Pro 2" required>

@@ -7,6 +7,7 @@ if (!token || !sellerInfo) {
 
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('store-name-aside').textContent = sellerInfo.store_name;
+    document.getElementById('store-owner-name').textContent = sellerInfo.owner_name || 'Partenaire';
     
     setupTabs();
     loadStats();
@@ -57,6 +58,7 @@ async function loadStats() {
             }, { brut: 0, commission: 0, net: 0 });
 
             document.getElementById('stat-brut').textContent = stats.brut.toLocaleString() + ' GNF';
+            document.getElementById('stat-count').textContent = result.data.length;
             document.getElementById('stat-commission').textContent = '-' + stats.commission.toLocaleString() + ' GNF';
             document.getElementById('stat-net').textContent = stats.net.toLocaleString() + ' GNF';
         }
@@ -84,11 +86,48 @@ async function loadMyProducts() {
                     <td>${p.price.toLocaleString()} GNF</td>
                     <td><span class="stock-value ${stockClass}">${p.stock}</span></td>
                     <td><span class="badge-status ${statusClass}">${statusLabel}</span></td>
+                    <td style="text-align: right; white-space: nowrap;">
+                        <button onclick="editProduct(${p.id})" class="btn-action btn-edit" title="Modifier">✏️</button>
+                        <button onclick="deleteProduct(${p.id})" class="btn-action btn-delete" title="Supprimer">🗑️</button>
+                    </td>
                 `;
                 tbody.appendChild(tr);
             });
         }
     } catch (err) { console.error(err); }
+}
+
+async function editProduct(id) {
+    try {
+        const res = await fetchAuth('/api/seller/products');
+        const result = await res.json();
+        const product = result.data.find(p => p.id === id);
+        
+        if (product) {
+            document.getElementById('p-id').value = product.id;
+            document.getElementById('p-name').value = product.name;
+            document.getElementById('p-desc').value = product.description;
+            document.getElementById('p-price').value = product.price;
+            document.getElementById('p-stock').value = product.stock;
+            document.getElementById('p-category').value = product.category;
+            document.getElementById('p-image').value = product.image;
+            
+            document.querySelector('#product-modal h3').textContent = '📝 Modifier le produit';
+            document.querySelector('#product-modal button[type="submit"]').textContent = 'Enregistrer les modifications';
+            document.getElementById('product-modal').style.display = 'flex';
+        }
+    } catch (err) { console.error(err); }
+}
+
+async function deleteProduct(id) {
+    if (confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')) {
+        try {
+            const res = await fetchAuth(`/api/seller/products/${id}`, { method: 'DELETE' });
+            if (res.ok) {
+                loadMyProducts();
+            }
+        } catch (err) { alert('Erreur lors de la suppression.'); }
+    }
 }
 
 async function loadMyOrders() {
@@ -119,6 +158,10 @@ async function loadMyOrders() {
 }
 
 function openAddProductModal() {
+    document.getElementById('seller-add-product-form').reset();
+    document.getElementById('p-id').value = '';
+    document.querySelector('#product-modal h3').textContent = '📦 Publier un nouveau produit';
+    document.querySelector('#product-modal button[type="submit"]').textContent = '📤 Soumettre l\'article';
     document.getElementById('product-modal').style.display = 'flex';
 }
 
@@ -128,6 +171,7 @@ function closeModal() {
 
 document.getElementById('seller-add-product-form').addEventListener('submit', async (e) => {
     e.preventDefault();
+    const id = document.getElementById('p-id').value;
     const payload = {
         name: document.getElementById('p-name').value,
         description: document.getElementById('p-desc').value,
@@ -137,17 +181,23 @@ document.getElementById('seller-add-product-form').addEventListener('submit', as
         image: document.getElementById('p-image').value
     };
 
+    const url = id ? `/api/seller/products/${id}` : '/api/seller/products';
+    const method = id ? 'PUT' : 'POST';
+
     try {
-        const res = await fetchAuth('/api/seller/products', {
-            method: 'POST',
+        const res = await fetchAuth(url, {
+            method: method,
             body: JSON.stringify(payload)
         });
         if (res.ok) {
-            alert('Produit soumis ! Il apparaîtra dès que l\'admin l\'aura validé.');
+            alert(id ? 'Produit mis à jour !' : 'Produit soumis ! Il apparaîtra dès que l\'admin l\'aura validé.');
             closeModal();
             loadMyProducts();
+        } else {
+            const error = await res.json();
+            alert('Erreur: ' + (error.error || 'Inconnue'));
         }
-    } catch (err) { alert('Erreur lors de l\'ajout.'); }
+    } catch (err) { alert('Erreur lors de l\'opération.'); }
 });
 
 function logout() {
