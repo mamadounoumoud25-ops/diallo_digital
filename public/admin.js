@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     setupTabs();
     setupModal();
+    setupMobileMenu();
     loadDashboardData();
     loadProducts();
     loadOrders();
@@ -167,6 +168,25 @@ function setupModal() {
             alert('Erreur: ' + err.message);
         }
     });
+}
+
+function setupMobileMenu() {
+    const menuToggle = document.getElementById('menu-toggle');
+    const sidebar = document.querySelector('.sidebar');
+    
+    if (menuToggle && sidebar) {
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+        });
+        
+        // Fermer le menu si on clique sur un lien (mobile)
+        const navItems = document.querySelectorAll('.sidebar-nav .nav-item');
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                sidebar.classList.remove('open');
+            });
+        });
+    }
 }
 
 // ==========================================

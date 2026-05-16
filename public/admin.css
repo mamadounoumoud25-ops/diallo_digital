@@ -405,3 +405,97 @@
     color: #ef4444;
     box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
 }
+
+/* ==========================================================================
+   Responsive Design (Mobile & Tablet)
+   ========================================================================== */
+
+.menu-toggle {
+    display: none;
+}
+
+@media (max-width: 1024px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: block !important;
+    }
+    
+    .sidebar {
+        position: fixed;
+        left: -280px;
+        top: 0;
+        bottom: 0;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 10px 0 30px rgba(0, 0, 0, 0.7);
+    }
+    
+    .sidebar.open {
+        left: 0;
+    }
+    
+    .admin-layout {
+        position: relative;
+    }
+    
+    .admin-header {
+        padding: 0.75rem 1rem;
+    }
+    
+    .admin-header h1 {
+        font-size: 1.1rem;
+    }
+    
+    .admin-content {
+        padding: 1rem;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .stat-card {
+        padding: 1rem;
+    }
+    
+    .stat-value {
+        font-size: 1.5rem;
+    }
+    
+    .section-top {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+    
+    .section-top h2 {
+        font-size: 1.25rem;
+    }
+    
+    .modal-content {
+        padding: 1.25rem;
+        max-width: 95%;
+    }
+    
+    /* Optimisation des tableaux pour mobile */
+    .table-container {
+        width: 100%;
+        overflow-x: auto;
+    }
+    
+    .data-table th, .data-table td {
+        padding: 0.75rem 0.5rem;
+        font-size: 0.8rem;
+    }
+    
+    .avatar {
+        width: 32px;
+        height: 32px;
+        font-size: 0.75rem;
+    }
+}
