@@ -80,7 +80,7 @@ function setupModal() {
     openBtn.addEventListener('click', () => {
         form.reset();
         form.dataset.mode = 'add';
-        document.querySelector('.modal-header h3').textContent = 'Ajouter un Produit';
+        document.querySelector('#product-modal h3').textContent = 'Ajouter un Produit';
         modalOverlay.classList.add('open');
     });
 
@@ -463,7 +463,7 @@ window.editProduct = function(id, name, desc, price, stock, category, image, vid
     form.dataset.mode = 'edit';
     form.dataset.editId = id;
     
-    document.querySelector('.modal-header h3').textContent = 'Modifier le Produit';
+    document.querySelector('#product-modal h3').textContent = 'Modifier le Produit';
     document.getElementById('product-modal').classList.add('open');
 }
 
