@@ -302,7 +302,7 @@
     padding: 1rem;
 }
 
-.modal.active {
+.modal.active, .modal.open {
     display: flex;
 }
 
